@@ -1,0 +1,213 @@
+<local:ChordiousWindow
+        MinWidth="320"
+        CanResize="False"
+        SizeToContent="WidthAndHeight"
+        Title="{Binding Title}"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.DiagramBarreEditorWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Cancel, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <StackPanel>
+        <StackPanel IsEnabled="{Binding Style.IsEditable}"
+                    Orientation="Horizontal">
+            <StackPanel>
+                <local:GroupBox Header="{Binding Style.BarreStyleGroupLabel}"
+                          Margin="5">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.BarreArcRatioLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.BarreArcRatioIsLocal}"
+                                      Margin="5"
+                                      Name="BarreArcRatioIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.BarreArcRatioToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <NumericUpDown AutomationProperties.LabeledBy="{Binding #BarreArcRatioIsLocalCheckBox}"
+                                               Height="25"
+                                               HorizontalContentAlignment="Center"
+                                               IsEnabled="{Binding Style.BarreArcRatioIsLocal}"
+                                               Margin="5"
+                                               Classes="percent"
+                                               ToolTip.Tip="{Binding Style.BarreArcRatioToolTip}"
+                                               Value="{Binding Style.BarreArcRatio}"
+                                               VerticalAlignment="Center"
+                                               VerticalContentAlignment="Center"
+                                               Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.BarreOpacityLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.BarreOpacityIsLocal}"
+                                      Margin="5"
+                                      Name="BarreOpacityIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.BarreOpacityToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <NumericUpDown AutomationProperties.LabeledBy="{Binding #BarreOpacityIsLocalCheckBox}"
+                                               Height="25"
+                                               HorizontalContentAlignment="Center"
+                                               IsEnabled="{Binding Style.BarreOpacityIsLocal}"
+                                               Margin="5"
+                                               Classes="percent boundpercent"
+                                               ToolTip.Tip="{Binding Style.BarreOpacityToolTip}"
+                                               Value="{Binding Style.BarreOpacity}"
+                                               VerticalAlignment="Center"
+                                               VerticalContentAlignment="Center"
+                                               Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.BarreLineColorLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.BarreLineColorIsLocal}"
+                                      Margin="5"
+                                      Name="BarreLineColorIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.BarreLineColorToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ColorPicker AutomationProperties.LabeledBy="{Binding #BarreLineColorIsLocalCheckBox}"
+                                              Height="25"
+                                              IsEnabled="{Binding Style.BarreLineColorIsLocal}"
+                                              Margin="5"
+                                              Color="{Binding Style.BarreLineColor, Converter={StaticResource StringToColorConverter}}"
+                                              ToolTip.Tip="{Binding Style.BarreLineColorToolTip}"
+                                              VerticalAlignment="Center"
+                                              Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.BarreLineThicknessLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.BarreLineThicknessIsLocal}"
+                                      Margin="5"
+                                      Name="BarreLineThicknessIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.BarreLineThicknessToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <NumericUpDown AutomationProperties.LabeledBy="{Binding #BarreLineThicknessIsLocalCheckBox}"
+                                               Height="25"
+                                               HorizontalContentAlignment="Center"
+                                               IsEnabled="{Binding Style.BarreLineThicknessIsLocal}"
+                                               Margin="5"
+                                               Classes="pixel"
+                                               ToolTip.Tip="{Binding Style.BarreLineThicknessToolTip}"
+                                               Value="{Binding Style.BarreLineThickness}"
+                                               VerticalAlignment="Center"
+                                               VerticalContentAlignment="Center"
+                                               Width="80" />
+                        </StackPanel>
+                    </StackPanel>
+                </local:GroupBox>
+            </StackPanel>
+            <StackPanel>
+                <local:GroupBox Header="{Binding Style.BarreLayoutGroupLabel}"
+                          Margin="5">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.BarreVisibleLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.BarreVisibleIsLocal}"
+                                      Margin="5"
+                                      Name="BarreVisibleIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.BarreVisibleToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <CheckBox AutomationProperties.LabeledBy="{Binding #BarreVisibleIsLocalCheckBox}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.BarreVisible}"
+                                      IsEnabled="{Binding Style.BarreVisibleIsLocal}"
+                                      Margin="5"
+                                      ToolTip.Tip="{Binding Style.BarreVisibleToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.SelectedBarreVerticalAlignmentLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.BarreVerticalAlignmentIsLocal}"
+                                      Margin="5"
+                                      Name="BarreVerticalAlignmentIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.SelectedBarreVerticalAlignmentToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ComboBox AutomationProperties.LabeledBy="{Binding #BarreVerticalAlignmentIsLocalCheckBox}"
+                                      Height="25"
+                                      IsEnabled="{Binding Style.BarreVerticalAlignmentIsLocal}"
+                                      ItemsSource="{Binding Style.BarreVerticalAlignments}"
+                                      Margin="5"
+                                      SelectedIndex="{Binding Style.SelectedBarreVerticalAlignmentIndex}"
+                                      Classes="clean"
+                                      ToolTip.Tip="{Binding Style.SelectedBarreVerticalAlignmentToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.SelectedBarreStackLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.BarreStackIsLocal}"
+                                      Margin="5"
+                                      Name="BarreStackIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.SelectedBarreStackToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ComboBox AutomationProperties.LabeledBy="{Binding #BarreStackIsLocalCheckBox}"
+                                      Height="25"
+                                      IsEnabled="{Binding Style.BarreStackIsLocal}"
+                                      ItemsSource="{Binding Style.BarreStacks}"
+                                      Margin="5"
+                                      SelectedIndex="{Binding Style.SelectedBarreStackIndex}"
+                                      Classes="clean"
+                                      ToolTip.Tip="{Binding Style.SelectedBarreStackToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="80" />
+                        </StackPanel>
+                    </StackPanel>
+                </local:GroupBox>
+            </StackPanel>
+        </StackPanel>
+        <WrapPanel FlowDirection="RightToLeft">
+            <StackPanel FlowDirection="LeftToRight"
+                        Orientation="Horizontal">
+                <Button AutomationProperties.Name="{Binding Style.ResetLabel}"
+                        Command="{Binding Style.Reset}"
+                        IsEnabled="{Binding Style.IsEditable}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding Style.ResetToolTip}">
+                    <Image Height="16"
+                                            Source="/Resources/reset16.png"
+                                            Width="16" />
+                </Button>
+                <Button Command="{Binding Apply}"
+                        Content="{x:Static vm:AppViewModel.ApplyLabel}"
+                        Margin="5"
+                        Classes="clean"
+                        Width="75" />
+                <Button Command="{Binding Accept}"
+                        Content="{x:Static vm:AppViewModel.AcceptLabel}"
+                        Margin="5"
+                        Classes="clean"
+                        Width="75" />
+                <Button Command="{Binding Cancel}"
+                        Content="{x:Static vm:AppViewModel.CancelLabel}"
+                        Margin="5"
+                        Classes="clean"
+                        Width="75" />
+            </StackPanel>
+        </WrapPanel>
+    </StackPanel>
+</local:ChordiousWindow>

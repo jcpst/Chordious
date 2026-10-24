@@ -8,7 +8,23 @@ Chordious is a fretboard diagram generator for fretted stringed instruments like
 
 **Official Website:** http://chordious.com/
 
-Chordious is for Windows only. See http://chordious.com/download/ for download and installation details.
+See http://chordious.com/download/ for download and installation details of the official Windows release.
+
+## Running on macOS and Linux ##
+
+`src/Chordious.Avalonia` is a cross-platform front end built with [Avalonia](https://avaloniaui.net/). It shares `Chordious.Core` and `Chordious.Core.ViewModel` with the Windows (WPF) app, so features and the user config file format are the same. With the [.NET SDK](https://dotnet.microsoft.com/download) (8 or later) installed:
+
+```sh
+dotnet run --project src/Chordious.Avalonia
+```
+
+To build a standalone `Chordious.app` for macOS (no .NET install needed to run it) into `bld/`:
+
+```sh
+scripts/build-macos-app.sh            # this Mac's architecture, or pass osx-arm64 / osx-x64
+```
+
+The user config is stored in `~/Library/Application Support/Chordious` on macOS and `~/.local/share/Chordious` on Linux. Differences from the Windows app: there's no auto-update, diagrams can't be exported as GIF, and keyboard shortcuts use Cmd as well as Ctrl on macOS.
 
 ## Features ##
 

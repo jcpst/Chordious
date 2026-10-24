@@ -1,0 +1,130 @@
+<local:ChordiousWindow
+        MinWidth="400"
+        CanResize="False"
+        SizeToContent="WidthAndHeight"
+        Title="{Binding Title}"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.ScaleEditorWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Cancel, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0"
+              Grid.ColumnSpan="2"
+              Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Content="{x:Static vm:NamedIntervalEditorViewModel.NameLabel}"
+                   Grid.Column="0"
+                   Margin="5"
+                   Name="NameLabel"
+                   Target="{Binding #NameTextBox}"
+                   ToolTip.Tip="{Binding NameToolTip}"
+                   VerticalAlignment="Center" />
+            <TextBox AutomationProperties.LabeledBy="{Binding #NameLabel}"
+                     Grid.Column="1"
+                     IsReadOnly="{Binding ReadOnly}"
+                     Margin="5"
+                     MaxLines="1"
+                     Name="NameTextBox"
+                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip.Tip="{Binding NameToolTip}" />
+        </Grid>
+        <StackPanel Grid.Column="0"
+                    Grid.Row="1"
+                    Orientation="Horizontal">
+            <Label Content="{x:Static vm:NamedIntervalEditorViewModel.IntervalsLabel}"
+                   Margin="5"
+                   Name="IntervalsLabel"
+                   Target="{Binding #IntervalsItemsControl}"
+                   ToolTip.Tip="{Binding IntervalsToolTip}"
+                   VerticalAlignment="Center" />
+            <Button Command="{Binding AddInterval}"
+                    Content="{x:Static vm:NamedIntervalEditorViewModel.AddIntervalLabel}"
+                    Height="30"
+                    Margin="0,5"
+                    Classes="clean"
+                    ToolTip.Tip="{x:Static vm:NamedIntervalEditorViewModel.AddIntervalToolTip}"
+                    VerticalAlignment="Center"
+                    Width="20" />
+            <Button Command="{Binding RemoveInterval}"
+                    Content="{x:Static vm:NamedIntervalEditorViewModel.RemoveIntervalLabel}"
+                    Height="30"
+                    Margin="5"
+                    Classes="clean"
+                    ToolTip.Tip="{x:Static vm:NamedIntervalEditorViewModel.RemoveIntervalToolTip}"
+                    VerticalAlignment="Center"
+                    Width="20" />
+        </StackPanel>
+        <ItemsControl AutomationProperties.LabeledBy="{Binding #IntervalsLabel}"
+                      Grid.Column="1"
+                      Grid.Row="1"
+                      ItemsSource="{Binding Intervals}"
+                      Margin="5"
+                      Name="IntervalsItemsControl"
+                      ToolTip.Tip="{Binding IntervalsToolTip}"
+                      VerticalAlignment="Center">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <NumericUpDown Classes="int" IsReadOnly="{Binding DataContext.ReadOnly, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        Margin="5"
+                                        Minimum="0"
+                                        ToolTip.Tip="{Binding ValueToolTip}"
+                                        Value="{Binding Value}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <StackPanel Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="2"
+                    Orientation="Horizontal">
+            <Label Content="{x:Static vm:NamedIntervalEditorViewModel.ExampleLabel}"
+                   Margin="5"
+                   ToolTip.Tip="{Binding ExampleToolTip}"
+                   VerticalAlignment="Center" />
+            <Label Content="{Binding Example}"
+                   Focusable="True"
+                   IsTabStop="True"
+                   Margin="5"
+                   ToolTip.Tip="{Binding ExampleToolTip}"
+                   VerticalAlignment="Center" />
+        </StackPanel>
+        <StackPanel Grid.ColumnSpan="2"
+                    Grid.Row="3"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Command="{Binding Accept}"
+                    Content="{x:Static vm:AppViewModel.AcceptLabel}"
+                    IsDefault="True"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+            <Button Command="{Binding Cancel}"
+                    Content="{x:Static vm:AppViewModel.CancelLabel}"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+        </StackPanel>
+    </Grid>
+</local:ChordiousWindow>

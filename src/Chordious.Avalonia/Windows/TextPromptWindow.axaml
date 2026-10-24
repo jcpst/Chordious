@@ -1,0 +1,46 @@
+<local:ChordiousWindow
+        MinWidth="400"
+        CanResize="False"
+        SizeToContent="WidthAndHeight"
+        Title="{Binding Title}"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.TextPromptWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Cancel, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <StackPanel>
+        <Label Content="{Binding Prompt}"
+               Margin="5"
+               Name="PromptLabel" />
+        <TextBox AutomationProperties.LabeledBy="{Binding #PromptLabel}"
+                 Margin="10,5"
+                 MaxLines="1"
+                 Name="InputTextBox"
+                 Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
+                 IsVisible="{Binding AllowText}" />
+        <NumericUpDown Classes="int" AutomationProperties.LabeledBy="{Binding #PromptLabel}"
+                            Margin="10,5"
+                            Minimum="0"
+                            Name="InputUpDown"
+                            Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
+                            IsVisible="{Binding RequireInteger}" />
+        <StackPanel HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Command="{Binding Accept}"
+                    Content="{x:Static vm:AppViewModel.AcceptLabel}"
+                    IsDefault="True"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+            <Button Command="{Binding Cancel}"
+                    Content="{x:Static vm:AppViewModel.CancelLabel}"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+        </StackPanel>
+    </StackPanel>
+</local:ChordiousWindow>

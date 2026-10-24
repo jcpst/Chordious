@@ -1,0 +1,54 @@
+<local:ChordiousWindow
+        MinHeight="100"
+        CanResize="False"
+        SizeToContent="Height"
+        Title="{Binding Title}"
+        Width="500"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.ConfirmationWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Reject, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Image Margin="15"
+                   Source="/Resources/warning32.png"
+                   VerticalAlignment="Top" />
+            <Label Focusable="True"
+                   Margin="5"
+                   Name="MessageLabel"
+                   VerticalAlignment="Center"
+                   Width="390">
+                <Label.Content>
+                    <TextBlock Text="{Binding Message}"
+                               TextWrapping="Wrap" />
+                </Label.Content>
+            </Label>
+        </StackPanel>
+        <StackPanel Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Command="{Binding Accept}"
+                    Content="{x:Static vm:AppViewModel.YesLabel}"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+            <Button Command="{Binding AcceptAndRemember}"
+                    Content="{Binding YesAndRememberLabel}"
+                    Margin="5"
+                    Classes="clean"
+                    IsVisible="{Binding ShowAcceptAndRemember}"
+                    Width="150" />
+            <Button Command="{Binding Reject}"
+                    Content="{x:Static vm:AppViewModel.NoLabel}"
+                    IsDefault="True"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+        </StackPanel>
+    </StackPanel>
+</local:ChordiousWindow>

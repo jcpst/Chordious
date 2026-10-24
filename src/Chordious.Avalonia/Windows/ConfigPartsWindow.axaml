@@ -1,0 +1,133 @@
+<local:ChordiousWindow Cursor="{Binding IsIdle, Converter={StaticResource IdleBoolToWaitCursorConverter}}"
+        Height="330"
+        CanResize="False"
+        Title="{Binding Title}"
+        Width="220"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.ConfigPartsWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Cancel, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <Grid IsEnabled="{Binding IsIdle}">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <local:GroupBox Grid.Row="0"
+                  Header="{x:Static vm:AppViewModel.IncludeLabel}"
+                  Margin="5">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{x:Static vm:ConfigViewModelBase.IncludeSettingsLabel}"
+                           Margin="5"
+                           Name="IncludeSettingsLabel"
+                           Target="{Binding #IncludeSettingsCheckBox}"
+                           ToolTip.Tip="{x:Static vm:ConfigViewModelBase.IncludeSettingsToolTip}"
+                           Width="100" />
+                    <CheckBox AutomationProperties.LabeledBy="{Binding #IncludeSettingsLabel}"
+                              HorizontalAlignment="Center"
+                              IsChecked="{Binding IncludeSettings}"
+                              Margin="5"
+                              Name="IncludeSettingsCheckBox"
+                              ToolTip.Tip="{x:Static vm:ConfigViewModelBase.IncludeSettingsToolTip}"
+                              VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{x:Static vm:ConfigViewModelBase.IncludeStylesLabel}"
+                           Margin="5"
+                           Name="IncludeStylesLabel"
+                           Target="{Binding #IncludeStylesCheckBox}"
+                           ToolTip.Tip="{x:Static vm:ConfigViewModelBase.IncludeStylesToolTip}"
+                           Width="100" />
+                    <CheckBox AutomationProperties.LabeledBy="{Binding #IncludeStylesLabel}"
+                              HorizontalAlignment="Center"
+                              IsChecked="{Binding IncludeStyles}"
+                              Margin="5"
+                              Name="IncludeStylesCheckBox"
+                              ToolTip.Tip="{x:Static vm:ConfigViewModelBase.IncludeStylesToolTip}"
+                              VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{x:Static vm:ConfigViewModelBase.IncludeInstrumentsLabel}"
+                           Margin="5"
+                           Name="IncludeInstrumentsLabel"
+                           Target="{Binding #IncludeInstrumentsCheckBox}"
+                           ToolTip.Tip="{x:Static vm:ConfigViewModelBase.IncludeInstrumentsToolTip}"
+                           Width="100" />
+                    <CheckBox AutomationProperties.LabeledBy="{Binding #IncludeInstrumentsLabel}"
+                              HorizontalAlignment="Center"
+                              IsChecked="{Binding IncludeInstruments}"
+                              Margin="5"
+                              Name="IncludeInstrumentsCheckBox"
+                              ToolTip.Tip="{x:Static vm:ConfigViewModelBase.IncludeInstrumentsToolTip}"
+                              VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{x:Static vm:ConfigViewModelBase.IncludeChordQualitiesLabel}"
+                           Margin="5"
+                           Name="IncludeChordQualitiesLabel"
+                           Target="{Binding #IncludeChordQualitiesCheckBox}"
+                           ToolTip.Tip="{x:Static vm:ConfigViewModelBase.IncludeChordQualitiesToolTip}"
+                           Width="100" />
+                    <CheckBox AutomationProperties.LabeledBy="{Binding #IncludeChordQualitiesLabel}"
+                              HorizontalAlignment="Center"
+                              IsChecked="{Binding IncludeChordQualities}"
+                              Margin="5"
+                              Name="IncludeChordQualitiesCheckBox"
+                              ToolTip.Tip="{x:Static vm:ConfigViewModelBase.IncludeChordQualitiesToolTip}"
+                              VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{x:Static vm:ConfigViewModelBase.IncludeScalesLabel}"
+                           Margin="5"
+                           Name="IncludeScalesLabel"
+                           Target="{Binding #IncludeScalesCheckBox}"
+                           ToolTip.Tip="{x:Static vm:ConfigViewModelBase.IncludeScalesToolTip}"
+                           Width="100" />
+                    <CheckBox AutomationProperties.LabeledBy="{Binding #IncludeScalesLabel}"
+                              HorizontalAlignment="Center"
+                              IsChecked="{Binding IncludeScales}"
+                              Margin="5"
+                              Name="IncludeScalesCheckBox"
+                              ToolTip.Tip="{x:Static vm:ConfigViewModelBase.IncludeScalesToolTip}"
+                              VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{x:Static vm:ConfigViewModelBase.IncludeLibraryLabel}"
+                           Margin="5"
+                           Name="IncludeLibraryLabel"
+                           Target="{Binding #IncludeLibraryCheckBox}"
+                           ToolTip.Tip="{x:Static vm:ConfigViewModelBase.IncludeLibraryToolTip}"
+                           Width="100" />
+                    <CheckBox AutomationProperties.LabeledBy="{Binding #IncludeLibraryLabel}"
+                              HorizontalAlignment="Center"
+                              IsChecked="{Binding IncludeLibrary}"
+                              Margin="5"
+                              Name="IncludeLibraryCheckBox"
+                              ToolTip.Tip="{x:Static vm:ConfigViewModelBase.IncludeLibraryToolTip}"
+                              VerticalAlignment="Center" />
+                </StackPanel>
+            </StackPanel>
+        </local:GroupBox>
+        <StackPanel Grid.Row="1"
+                    HorizontalAlignment="Right"
+                    Margin="5"
+                    Orientation="Horizontal">
+            <Button Command="{Binding Accept}"
+                    Content="{x:Static vm:AppViewModel.AcceptLabel}"
+                    IsDefault="True"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+            <Button Command="{Binding Cancel}"
+                    Content="{x:Static vm:AppViewModel.CancelLabel}"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+        </StackPanel>
+    </Grid>
+</local:ChordiousWindow>

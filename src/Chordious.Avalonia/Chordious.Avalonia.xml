@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<chordious>
+  <settings>
+    <setting key="app.firstrun" value="True" />
+    <setting key="app.checkupdateonstart" value="True" />
+    <setting key="app.releasechannel" value="Official" />
+    <setting key="app.renderbackground" value="None" />
+    <setting key="diagramexport.filenameformat" value="%t.%x" />
+    <setting key="diagramexport.exportformat" value="SVG" />
+    <setting key="diagramexport.overwritefiles" value="True" />
+    <setting key="diagramexport.scalefactor" value="1.0" />
+    <setting key="diagrameditor.renderbackground" value="Transparent" />
+    <setting key="integration.enhancedcopy" value="False" />
+  </settings>
+</chordious>

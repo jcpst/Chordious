@@ -1,0 +1,358 @@
+<local:ChordiousWindow Height="600"
+        MinHeight="600"
+        MinWidth="800"
+        Title="{Binding Title}"
+        Width="800"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.DiagramLibraryWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Close, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <WrapPanel Grid.Column="0"
+                   Grid.Row="0">
+            <Label Content="{Binding NodesLabel}"
+                   FontWeight="Bold"
+                   Margin="5,0"
+                   Name="NodesLabel"
+                   Target="{Binding #NodesListView}"
+                   ToolTip.Tip="{Binding NodesToolTip}" />
+        </WrapPanel>
+        <ListBox DragDrop.AllowDrop="True"
+                 AutomationProperties.LabeledBy="{Binding #NodesLabel}"
+                 Grid.Column="0"
+                 Grid.Row="1"
+                 ItemsSource="{Binding Nodes}"
+                 Margin="5,0"
+                 Name="NodesListView"
+                 SelectedItem="{Binding SelectedNode}">
+            <ListBox.KeyBindings>
+                <KeyBinding Command="{Binding EditNode}" Gesture="Enter" />
+                <KeyBinding Command="{Binding EditNode}" Gesture="Space" />
+                <KeyBinding Command="{Binding DeleteNode}" Gesture="Delete" />
+            </ListBox.KeyBindings>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock DragDrop.AllowDrop="True"
+                               Text="{Binding Name}" local:Gestures.DoubleTapCommand="{Binding DataContext.EditNode, RelativeSource={RelativeSource AncestorType=Window}}">
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ContextMenu>
+                <ContextMenu Name="NodeContextMenu">
+                    <MenuItem Command="{Binding CreateNode}"
+                              Header="{Binding CreateNodeLabel}"
+                              ToolTip.Tip="{Binding CreateNodeToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/add16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding EditNode}"
+                              Header="{Binding EditNodeLabel}"
+                              ToolTip.Tip="{Binding EditNodeToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/edit16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding DeleteNode}"
+                              Header="{Binding DeleteNodeLabel}"
+                              ToolTip.Tip="{Binding DeleteNodeToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/remove16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Command="{Binding EditNodeStyle}"
+                              Header="{Binding EditNodeStyleLabel}"
+                              ToolTip.Tip="{Binding EditNodeStyleToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/style16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Command="{Binding CloneNode}"
+                              Header="{Binding CloneNodeLabel}"
+                              ToolTip.Tip="{Binding CloneNodeToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/clone16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding CopyNode}"
+                              Header="{Binding CopyNodeLabel}"
+                              ToolTip.Tip="{Binding CopyNodeToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/copy16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding MergeNode}"
+                              Header="{Binding MergeNodeLabel}"
+                              ToolTip.Tip="{Binding MergeNodeToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/move16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+        <WrapPanel Grid.Column="1"
+                   Grid.Row="0"
+                   IsEnabled="{Binding NodeIsSelected}"
+                   Margin="5,0">
+            <Label Content="{x:Static vm:AppViewModel.PathLabel}"
+                   FontWeight="Bold" />
+            <Label Content="{Binding SelectedNode.Path}" />
+            <Label Content="{x:Static vm:AppViewModel.NameLabel}"
+                   FontWeight="Bold" />
+            <Label Content="{Binding SelectedNode.Name}" />
+            <Label Content="{x:Static vm:AppViewModel.CountLabel}"
+                   FontWeight="Bold" />
+            <Label Content="{Binding SelectedNode.Diagrams.Count}" />
+            <Label Content="{x:Static vm:AppViewModel.SelectedLabel}"
+                   FontWeight="Bold" />
+            <Label Content="{Binding SelectedNode.SelectedDiagrams.Count}" />
+        </WrapPanel>
+        <ListBox DragDrop.AllowDrop="True"
+                  Grid.Column="1"
+                  Grid.Row="1"
+                  IsEnabled="{Binding NodeIsSelected}"
+                  ItemsSource="{Binding SelectedNode.Diagrams}"
+                  Margin="5,0"
+                  Name="DiagramsListView"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  SelectionMode="Multiple">
+            <ListBox.KeyBindings>
+                <KeyBinding Command="{Binding SelectedNode.EditSelected}" Gesture="Enter" />
+                <KeyBinding Command="{Binding SelectedNode.EditSelected}" Gesture="Space" />
+                <KeyBinding Command="{Binding SelectedNode.SendSelectedImageToClipboard}" Gesture="Ctrl+C" />
+                <KeyBinding Command="{Binding SelectedNode.SendSelectedScaledImageToClipboard}" Gesture="Ctrl+Shift+C" />
+                <KeyBinding Command="{Binding SelectedNode.SendSelectedTextToClipboard}" Gesture="Ctrl+Shift+Alt+C" />
+                <KeyBinding Command="{Binding SelectedNode.DeleteSelected}" Gesture="Delete" />
+            </ListBox.KeyBindings>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Margin="5" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Image
+                           Height="{Binding TotalHeight}"
+                           Margin="5"
+                           Source="{Binding ImageObject}"
+                           Width="{Binding TotalWidth}" local:Gestures.DoubleTapCommand="{Binding ShowEditor}">
+                    </Image>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ContextMenu>
+                <ContextMenu Name="DiagramsListViewContextMenu">
+                    <MenuItem Command="{Binding SelectedNode.CreateDiagram}"
+                              Header="{Binding SelectedNode.CreateDiagramLabel}"
+                              ToolTip.Tip="{Binding SelectedNode.CreateDiagramToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/add16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding SelectedNode.EditSelected}"
+                              Header="{Binding SelectedNode.EditSelectedLabel}"
+                              ToolTip.Tip="{Binding SelectedNode.EditSelectedToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/edit16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding SelectedNode.DeleteSelected}"
+                              Header="{Binding SelectedNode.DeleteSelectedLabel}"
+                              ToolTip.Tip="{Binding SelectedNode.DeleteSelectedToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/remove16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Command="{Binding SelectedNode.ExportSelected}"
+                              Header="{Binding SelectedNode.ExportSelectedLabel}"
+                              ToolTip.Tip="{Binding SelectedNode.ExportSelectedToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/export16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding SelectedNode.SendSelectedImageToClipboard}"
+                              Header="{Binding SelectedNode.SendSelectedImageToClipboardLabel}"
+                              ToolTip.Tip="{Binding SelectedNode.SendSelectedImageToClipboardToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/copy16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding SelectedNode.SendSelectedScaledImageToClipboard}"
+                              Header="{Binding SelectedNode.SendSelectedScaledImageToClipboardLabel}"
+                              ToolTip.Tip="{Binding SelectedNode.SendSelectedScaledImageToClipboardToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/copy16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding SelectedNode.SendSelectedTextToClipboard}"
+                              Header="{Binding SelectedNode.SendSelectedTextToClipboardLabel}"
+                              ToolTip.Tip="{Binding SelectedNode.SendSelectedTextToClipboardToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/copy16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Command="{Binding SelectedNode.ResetStylesSelected}"
+                              Header="{Binding SelectedNode.ResetStylesSelectedLabel}"
+                              ToolTip.Tip="{Binding SelectedNode.ResetStylesSelectedToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/reset16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Command="{Binding SelectedNode.CloneSelected}"
+                              Header="{Binding SelectedNode.CloneSelectedLabel}"
+                              ToolTip.Tip="{Binding SelectedNode.CloneSelectedToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/clone16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding SelectedNode.CopySelected}"
+                              Header="{Binding SelectedNode.CopySelectedLabel}"
+                              ToolTip.Tip="{Binding SelectedNode.CopySelectedToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/copy16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding SelectedNode.MoveSelected}"
+                              Header="{Binding SelectedNode.MoveSelectedLabel}"
+                              ToolTip.Tip="{Binding SelectedNode.MoveSelectedToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/move16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+        <WrapPanel Grid.Column="0"
+                   Grid.Row="2"
+                   HorizontalAlignment="Center">
+            <StackPanel FlowDirection="LeftToRight"
+                        Orientation="Horizontal">
+                <Button AutomationProperties.Name="{Binding CreateNodeLabel}"
+                        Command="{Binding CreateNode}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding CreateNodeToolTip}">
+                    <Image Height="16"
+                                            Margin="5"
+                                            Source="/Resources/add16.png"
+                                            Width="16" />
+                </Button>
+                <Button AutomationProperties.Name="{Binding EditNodeLabel}"
+                        Command="{Binding EditNode}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding EditNodeToolTip}">
+                    <Image Height="16"
+                                            Margin="5"
+                                            Source="/Resources/edit16.png"
+                                            Width="16" />
+                </Button>
+                <Button AutomationProperties.Name="{Binding DeleteNodeLabel}"
+                        Command="{Binding DeleteNode}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding DeleteNodeToolTip}">
+                    <Image Height="16"
+                                            Margin="5"
+                                            Source="/Resources/remove16.png"
+                                            Width="16" />
+                </Button>
+            </StackPanel>
+            <StackPanel Margin="5"
+                        Orientation="Horizontal">
+                <Separator />
+            </StackPanel>
+            <StackPanel FlowDirection="LeftToRight"
+                        Orientation="Horizontal">
+                <Button AutomationProperties.Name="{Binding EditNodeStyleLabel}"
+                        Command="{Binding SelectedNode.EditCollectionStyle}"
+                        IsEnabled="{Binding NodeIsSelected}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding EditNodeStyleToolTip}">
+                    <Image Height="16"
+                                            Margin="5"
+                                            Source="/Resources/style16.png"
+                                            Width="16" />
+                </Button>
+            </StackPanel>
+        </WrapPanel>
+        <WrapPanel Grid.Column="1"
+                   Grid.Row="2"
+                   HorizontalAlignment="Center">
+            <StackPanel FlowDirection="LeftToRight"
+                        Orientation="Horizontal">
+                <Button AutomationProperties.Name="{Binding SelectedNode.CreateDiagramLabel}"
+                        Command="{Binding SelectedNode.CreateDiagram}"
+                        IsEnabled="{Binding NodeIsSelected}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding SelectedNode.CreateDiagramToolTip}">
+                    <Image Height="16"
+                                            Margin="5"
+                                            Source="/Resources/add16.png"
+                                            Width="16" />
+                </Button>
+                <Button AutomationProperties.Name="{Binding SelectedNode.EditSelectedLabel}"
+                        Command="{Binding SelectedNode.EditSelected}"
+                        IsEnabled="{Binding NodeIsSelected}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding SelectedNode.EditSelectedToolTip}">
+                    <Image Height="16"
+                                            Margin="5"
+                                            Source="/Resources/edit16.png"
+                                            Width="16" />
+                </Button>
+                <Button AutomationProperties.Name="{Binding SelectedNode.DeleteSelectedLabel}"
+                        Command="{Binding SelectedNode.DeleteSelected}"
+                        IsEnabled="{Binding NodeIsSelected}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding SelectedNode.DeleteSelectedToolTip}">
+                    <Image Height="16"
+                                            Margin="5"
+                                            Source="/Resources/remove16.png"
+                                            Width="16" />
+                </Button>
+            </StackPanel>
+            <StackPanel Margin="5"
+                        Orientation="Horizontal">
+                <Separator />
+            </StackPanel>
+            <StackPanel FlowDirection="LeftToRight"
+                        Orientation="Horizontal">
+                <Button AutomationProperties.Name="{Binding SelectedNode.ExportSelectedLabel}"
+                        Command="{Binding SelectedNode.ExportSelected}"
+                        IsEnabled="{Binding NodeIsSelected}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding SelectedNode.ExportSelectedToolTip}">
+                    <Image Height="16"
+                                            Margin="5"
+                                            Source="/Resources/export16.png"
+                                            Width="16" />
+                </Button>
+            </StackPanel>
+        </WrapPanel>
+    </Grid>
+</local:ChordiousWindow>

@@ -1,0 +1,163 @@
+<local:ChordiousWindow Cursor="{Binding IsIdle, Converter={StaticResource IdleBoolToWaitCursorConverter}}"
+        Height="230"
+        CanResize="False"
+        Title="{x:Static vm:DiagramExportViewModelBase.Title}"
+        Width="400"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.DiagramExportWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding ExportAsync, Mode=OneWay}" Gesture="F5" />
+        <KeyBinding Command="{Binding CancelOrClose, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <Grid IsEnabled="{Binding IsIdle}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Label Content="{Binding OutputPathLabel}"
+               Grid.Column="0"
+               Grid.Row="0"
+               Margin="5"
+               Name="OutputPathLabel"
+               Target="{Binding #OutputPathTextBox}"
+               ToolTip.Tip="{Binding OutputPathToolTip}" />
+        <TextBox AutomationProperties.LabeledBy="{Binding #OutputPathLabel}"
+                 Grid.Column="1"
+                 Grid.Row="0"
+                 Margin="5"
+                 MaxLines="1"
+                 Name="OutputPathTextBox"
+                 SelectedText=""
+                 Text="{Binding OutputPath}"
+                 ToolTip.Tip="{Binding OutputPathToolTip}" />
+        <Button Command="{Binding ChooseOutputPath, Mode=OneWay}"
+                Content="{Binding ChooseOutputPathLabel}"
+                Grid.Column="2"
+                Grid.Row="0"
+                Margin="5"
+                Classes="clean"
+                ToolTip.Tip="{Binding ChooseOutputPathToolTip}" />
+        <Label Content="{Binding SelectedFilenameFormatLabel}"
+               Grid.Column="0"
+               Grid.Row="1"
+               Margin="5"
+               Name="FilenameFormatLabel"
+               Target="{Binding #FilenameFormatComboBox}"
+               ToolTip.Tip="{Binding SelectedFilenameFormatToolTip}" />
+        <ComboBox AutomationProperties.LabeledBy="{Binding #FilenameFormatLabel}"
+                  Grid.Column="1"
+                  Grid.Row="1"
+                  IsEditable="True"
+                  ItemsSource="{Binding FilenameFormats}"
+                  Margin="5"
+                  Name="FilenameFormatComboBox"
+                  SelectedItem="{Binding SelectedFilenameFormat}"
+                  Classes="clean"
+                  Text="{Binding SelectedFilenameFormat, UpdateSourceTrigger=LostFocus}"
+                  ToolTip.Tip="{Binding SelectedFilenameFormatToolTip}" />
+        <ComboBox AutomationProperties.Name="{Binding SelectedExportFormatLabel}"
+                  Grid.Column="3"
+                  Grid.Row="1"
+                  ItemsSource="{Binding ExportFormats}"
+                  Margin="5"
+                  SelectedIndex="{Binding SelectedExportFormatIndex}"
+                  Classes="clean"
+                  ToolTip.Tip="{Binding SelectedExportFormatToolTip}"
+                  VerticalAlignment="Center"
+                  Width="50" />
+        <WrapPanel FlowDirection="LeftToRight"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="3"
+                   Grid.Row="2">
+            <Label Content="{Binding ExampleFilenameFormatLabel}"
+                   Margin="5"
+                   ToolTip.Tip="{Binding ExampleFilenameFormatToolTip}" />
+            <Label Content="{Binding ExampleFilenameFormat}"
+                   Focusable="True"
+                   FontStyle="Italic"
+                   IsTabStop="True"
+                   Margin="5"
+                   Name="ExampleFilenameFormat"
+                   ToolTip.Tip="{Binding ExampleFilenameFormatToolTip}"
+                   Width="300" />
+        </WrapPanel>
+        <WrapPanel FlowDirection="LeftToRight"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="3"
+                   Grid.Row="3"
+                   HorizontalAlignment="Center">
+            <Label Content="{Binding ScaleFactorLabel}"
+                   Margin="5"
+                   Name="ScaleFactorLabel"
+                   Target="{Binding #ScaleFactorTextBox}"
+                   ToolTip.Tip="{Binding ScaleFactorToolTip}" />
+            <NumericUpDown AutomationProperties.LabeledBy="{Binding #ScaleFactorLabel}"
+                               FormatString="P0"
+                               HorizontalContentAlignment="Center"
+                               Increment="0.01"
+                               IsEnabled="{Binding CanScale}"
+                               Margin="5"
+                               Maximum="{Binding MaxScaleFactor}"
+                               Minimum="0.01"
+                               Name="ScaleFactorTextBox"
+                               ToolTip.Tip="{Binding ScaleFactorToolTip}"
+                               Value="{Binding ScaleFactor}"
+                               Width="80" />
+            <Label Content="{Binding OverwriteFilesLabel}"
+                   Margin="5"
+                   Name="OverwriteFilesLabel"
+                   Target="{Binding #OverwriteFilesCheckBox}"
+                   ToolTip.Tip="{Binding OverwriteFilesToolTip}" />
+            <CheckBox AutomationProperties.LabeledBy="{Binding #OverwriteFilesLabel}"
+                      IsChecked="{Binding OverwriteFiles}"
+                      Margin="5"
+                      Name="OverwriteFilesCheckBox"
+                      ToolTip.Tip="{Binding OverwriteFilesToolTip}"
+                      VerticalAlignment="Center" />
+        </WrapPanel>
+        <StackPanel Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="5"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <ProgressBar FlowDirection="LeftToRight"
+                         Height="20"
+                         Margin="5"
+                         Maximum="1.0"
+                         Minimum="0.0"
+                         Value="{Binding PercentComplete, Mode=OneWay}"
+                         Width="275" />
+            <Button AutomationProperties.Name="{Binding Source={x:Static vm:DiagramExportViewModelBase.ExportAsyncLabel}, Converter={StaticResource AltTextToTextConverter}}"
+                    Command="{Binding ExportAsync, Mode=OneWay}"
+                    IsDefault="True"
+                    Margin="5"
+                    Classes="clean noborder"
+                    ToolTip.Tip="{x:Static vm:DiagramExportViewModelBase.ExportAsyncToolTip}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="16"
+                                            Margin="5"
+                                            Source="/Resources/export16.png"
+                                            Width="16" />
+                    <AccessText HorizontalAlignment="Center"
+                                Margin="5"
+                                Name="ExportAsyncLabel"
+                                Text="{x:Static vm:DiagramExportViewModelBase.ExportAsyncLabel}"
+                                VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</local:ChordiousWindow>

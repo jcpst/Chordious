@@ -1,0 +1,182 @@
+<local:ChordiousWindow Cursor="{Binding IsIdle, Converter={StaticResource IdleBoolToWaitCursorConverter}}"
+        Height="320"
+        CanResize="False"
+        SizeToContent="WidthAndHeight"
+        Title="{x:Static vm:MainViewModel.Title}"
+        Width="480"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid IsEnabled="{Binding IsIdle}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Button AutomationProperties.Name="{Binding Source={x:Static vm:MainViewModel.ShowChordFinderLabel}, Converter={StaticResource AltTextToTextConverter}}"
+                    Command="{Binding ShowChordFinder, Mode=OneWay}"
+                    Grid.Row="0"
+                    Margin="5"
+                    Classes="clean noborder"
+                    ToolTip.Tip="{x:Static vm:MainViewModel.ShowChordFinderToolTip}">
+                <StackPanel>
+                    <Image Height="48"
+                                            Margin="2"
+                                            Source="/Resources/chordfinder48.png"
+                                            Width="48" />
+                    <AccessText HorizontalAlignment="Center"
+                                Name="ShowChordFinderLabel"
+                                Text="{x:Static vm:MainViewModel.ShowChordFinderLabel}" />
+                </StackPanel>
+            </Button>
+            <Button AutomationProperties.Name="{Binding Source={x:Static vm:MainViewModel.ShowScaleFinderLabel}, Converter={StaticResource AltTextToTextConverter}}"
+                    Command="{Binding ShowScaleFinder, Mode=OneWay}"
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Margin="5"
+                    Classes="clean noborder"
+                    ToolTip.Tip="{x:Static vm:MainViewModel.ShowScaleFinderToolTip}">
+                <StackPanel>
+                    <Image Height="48"
+                                            Margin="2"
+                                            Source="/Resources/scalefinder48.png"
+                                            Width="48" />
+                    <AccessText HorizontalAlignment="Center"
+                                Name="ShowScaleFinderLabel"
+                                Text="{x:Static vm:MainViewModel.ShowScaleFinderLabel}" />
+                </StackPanel>
+            </Button>
+            <Button AutomationProperties.Name="{Binding Source={x:Static vm:MainViewModel.ShowDiagramLibraryLabel}, Converter={StaticResource AltTextToTextConverter}}"
+                    Command="{Binding ShowDiagramLibrary, Mode=OneWay}"
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Margin="5"
+                    Classes="clean noborder"
+                    ToolTip.Tip="{x:Static vm:MainViewModel.ShowDiagramLibraryToolTip}">
+                <StackPanel>
+                    <Image Height="48"
+                                            Margin="2"
+                                            Source="/Resources/library48.png"
+                                            Width="48" />
+                    <AccessText HorizontalAlignment="Center"
+                                Name="ShowDiagramLibraryLabel"
+                                Text="{x:Static vm:MainViewModel.ShowDiagramLibraryLabel}" />
+                </StackPanel>
+            </Button>
+            <Button AutomationProperties.Name="{Binding Source={x:Static vm:MainViewModel.ShowInstrumentManagerLabel}, Converter={StaticResource AltTextToTextConverter}}"
+                    Command="{Binding ShowInstrumentManager, Mode=OneWay}"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Margin="5"
+                    Classes="clean noborder"
+                    ToolTip.Tip="{x:Static vm:MainViewModel.ShowInstrumentManagerToolTip}">
+                <StackPanel>
+                    <Image Height="48"
+                                            Margin="2"
+                                            Source="/Resources/instruments48.png"
+                                            Width="48" />
+                    <AccessText HorizontalAlignment="Center"
+                                Name="ShowInstrumentManagerLabel"
+                                Text="{x:Static vm:MainViewModel.ShowInstrumentManagerLabel}" />
+                </StackPanel>
+            </Button>
+            <Button AutomationProperties.Name="{Binding Source={x:Static vm:MainViewModel.ShowOptionsLabel}, Converter={StaticResource AltTextToTextConverter}}"
+                    Command="{Binding ShowOptions, Mode=OneWay}"
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    Margin="5"
+                    Classes="clean noborder"
+                    ToolTip.Tip="{x:Static vm:MainViewModel.ShowOptionsToolTip}">
+                <StackPanel>
+                    <Image Height="48"
+                                            Margin="2"
+                                            Source="/Resources/options48.png"
+                                            Width="48" />
+                    <AccessText HorizontalAlignment="Center"
+                                Name="ShowOptionsLabel"
+                                Text="{x:Static vm:MainViewModel.ShowOptionsLabel}" />
+                </StackPanel>
+            </Button>
+            <Button AutomationProperties.Name="{Binding Source={x:Static vm:MainViewModel.ShowHelpLabel}, Converter={StaticResource AltTextToTextConverter}}"
+                    Command="{Binding ShowHelp, Mode=OneWay}"
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Margin="5"
+                    Classes="clean noborder"
+                    ToolTip.Tip="{x:Static vm:MainViewModel.ShowHelpToolTip}">
+                <StackPanel>
+                    <Image Height="48"
+                                            Margin="2"
+                                            Source="/Resources/help48.png"
+                                            Width="48" />
+                    <AccessText HorizontalAlignment="Center"
+                                Name="ShowHelpLabel"
+                                Text="{x:Static vm:MainViewModel.ShowHelpLabel}" />
+                </StackPanel>
+            </Button>
+        </Grid>
+        <StackPanel>
+            <Image Height="128"
+                                    Margin="0,16,0,0"
+                                    Source="/Resources/chordious128.png"
+                                    Width="128" />
+            <Label Content="{x:Static vm:MainViewModel.FullProgramName}"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   HorizontalContentAlignment="Center" />
+            <Label Content="{x:Static vm:MainViewModel.Description}"
+                   FontSize="10"
+                   HorizontalContentAlignment="Center" />
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button AutomationProperties.Name="{Binding Source={x:Static vm:MainViewModel.LaunchWebsiteLabel}, Converter={StaticResource AltTextToTextConverter}}"
+                        Command="{Binding LaunchWebsite, Mode=OneWay}"
+                        Grid.Column="0"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{x:Static vm:MainViewModel.LaunchWebsiteToolTip}">
+                    <StackPanel>
+                        <Image Height="16"
+                                                Margin="5"
+                                                Source="/Resources/website16.png"
+                                                Width="16" />
+                        <AccessText HorizontalAlignment="Center"
+                                    Name="LaunchWebsiteLabel"
+                                    Text="{x:Static vm:MainViewModel.LaunchWebsiteLabel}" />
+                    </StackPanel>
+                </Button>
+                <Button AutomationProperties.Name="{Binding Source={x:Static vm:MainViewModel.ShowLicensesLabel}, Converter={StaticResource AltTextToTextConverter}}"
+                        Command="{Binding ShowLicenses, Mode=OneWay}"
+                        Grid.Column="1"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{x:Static vm:MainViewModel.ShowLicensesToolTip}">
+                    <StackPanel>
+                        <Image Height="16"
+                                                Margin="5"
+                                                Source="/Resources/license16.png"
+                                                Width="16" />
+                        <AccessText HorizontalAlignment="Center"
+                                    Name="ShowLicensesLabel"
+                                    Text="{x:Static vm:MainViewModel.ShowLicensesLabel}" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</local:ChordiousWindow>

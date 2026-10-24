@@ -1,0 +1,279 @@
+<local:ChordiousWindow
+        MinWidth="320"
+        CanResize="False"
+        SizeToContent="WidthAndHeight"
+        Title="{Binding Title}"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.DiagramFretLabelEditorWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Cancel, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <StackPanel>
+        <local:GroupBox Header="{Binding PropertiesGroupLabel}"
+                  Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding TextLabel}"
+                       Margin="5"
+                       Name="TextLabel"
+                       Target="{Binding #TextTextBox}"
+                       ToolTip.Tip="{Binding TextToolTip}"
+                       Width="120" />
+                <TextBox AutomationProperties.LabeledBy="{Binding #TextLabel}"
+                         HorizontalContentAlignment="Center"
+                         Margin="5"
+                         MaxLines="1"
+                         Name="TextTextBox"
+                         SelectedText=""
+                         Text="{Binding Text}"
+                         ToolTip.Tip="{Binding TextToolTip}"
+                         Width="80" />
+            </StackPanel>
+        </local:GroupBox>
+        <StackPanel IsEnabled="{Binding Style.IsEditable}"
+                    Orientation="Horizontal">
+            <StackPanel>
+                <local:GroupBox Header="{Binding Style.FretLabelTextGroupLabel}"
+                          Margin="5">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.FretLabelFontFamilyLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.FretLabelFontFamilyIsLocal}"
+                                      Margin="5"
+                                      Name="FretLabelFontFamilyIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.FretLabelFontFamilyToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ComboBox AutomationProperties.LabeledBy="{Binding #FretLabelFontFamilyIsLocalCheckBox}"
+                                      Height="25"
+                                      IsEditable="True"
+                                      IsEnabled="{Binding Style.FretLabelFontFamilyIsLocal}"
+                                      ItemsSource="{Binding Style.FontFamilies}"
+                                      Margin="5"
+                                      SelectedItem="{Binding Style.FretLabelFontFamily}"
+                                      Classes="clean"
+                                      Text="{Binding Style.FretLabelFontFamily, UpdateSourceTrigger=LostFocus}"
+                                      ToolTip.Tip="{Binding Style.FretLabelFontFamilyToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.SelectedFretLabelTextStyleLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.FretLabelTextStyleIsLocal}"
+                                      Margin="5"
+                                      Name="FretLabelTextStyleIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.SelectedFretLabelTextStyleToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ComboBox AutomationProperties.LabeledBy="{Binding #FretLabelTextStyleIsLocalCheckBox}"
+                                      Height="25"
+                                      IsEnabled="{Binding Style.FretLabelTextStyleIsLocal}"
+                                      ItemsSource="{Binding Style.FretLabelTextStyles}"
+                                      Margin="5"
+                                      SelectedIndex="{Binding Style.SelectedFretLabelTextStyleIndex}"
+                                      Classes="clean"
+                                      ToolTip.Tip="{Binding Style.SelectedFretLabelTextStyleToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.FretLabelTextColorLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.FretLabelTextColorIsLocal}"
+                                      Margin="5"
+                                      Name="FretLabelTextColorIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.FretLabelTextColorToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ColorPicker AutomationProperties.LabeledBy="{Binding #FretLabelTextColorIsLocalCheckBox}"
+                                              Height="25"
+                                              IsEnabled="{Binding Style.FretLabelTextColorIsLocal}"
+                                              Margin="5"
+                                              Color="{Binding Style.FretLabelTextColor, Converter={StaticResource StringToColorConverter}}"
+                                              ToolTip.Tip="{Binding Style.FretLabelTextColorToolTip}"
+                                              VerticalAlignment="Center"
+                                              Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.FretLabelTextOpacityLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.FretLabelTextOpacityIsLocal}"
+                                      Margin="5"
+                                      Name="FretLabelTextOpacityIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.FretLabelTextOpacityToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <NumericUpDown AutomationProperties.LabeledBy="{Binding #FretLabelTextOpacityIsLocalCheckBox}"
+                                               Height="25"
+                                               HorizontalContentAlignment="Center"
+                                               IsEnabled="{Binding Style.FretLabelTextOpacityIsLocal}"
+                                               Margin="5"
+                                               Classes="percent boundpercent"
+                                               ToolTip.Tip="{Binding Style.FretLabelTextOpacityToolTip}"
+                                               Value="{Binding Style.FretLabelTextOpacity}"
+                                               VerticalAlignment="Center"
+                                               VerticalContentAlignment="Center"
+                                               Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.FretLabelTextSizeRatioLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.FretLabelTextSizeRatioIsLocal}"
+                                      Margin="5"
+                                      Name="FretLabelTextSizeRatioIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.FretLabelTextSizeRatioToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <NumericUpDown AutomationProperties.LabeledBy="{Binding #FretLabelTextSizeRatioIsLocalCheckBox}"
+                                               Height="25"
+                                               HorizontalContentAlignment="Center"
+                                               IsEnabled="{Binding Style.FretLabelTextSizeRatioIsLocal}"
+                                               Margin="5"
+                                               Classes="percent boundpercent"
+                                               ToolTip.Tip="{Binding Style.FretLabelTextSizeRatioToolTip}"
+                                               Value="{Binding Style.FretLabelTextSizeRatio}"
+                                               VerticalAlignment="Center"
+                                               VerticalContentAlignment="Center"
+                                               Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.FretLabelTextWidthRatioLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.FretLabelTextWidthRatioIsLocal}"
+                                      Margin="5"
+                                      Name="FretLabelTextWidthRatioIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.FretLabelTextWidthRatioToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <NumericUpDown AutomationProperties.LabeledBy="{Binding #FretLabelTextWidthRatioIsLocalCheckBox}"
+                                               Height="25"
+                                               HorizontalContentAlignment="Center"
+                                               IsEnabled="{Binding Style.FretLabelTextWidthRatioIsLocal}"
+                                               Margin="5"
+                                               Classes="percent boundpercent"
+                                               ToolTip.Tip="{Binding Style.FretLabelTextWidthRatioToolTip}"
+                                               Value="{Binding Style.FretLabelTextWidthRatio}"
+                                               VerticalAlignment="Center"
+                                               VerticalContentAlignment="Center"
+                                               Width="80" />
+                        </StackPanel>
+                    </StackPanel>
+                </local:GroupBox>
+            </StackPanel>
+            <StackPanel>
+                <local:GroupBox Header="{Binding Style.FretLabelLayoutGroupLabel}"
+                          Margin="5">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.FretLabelTextVisibleLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.FretLabelTextVisibleIsLocal}"
+                                      Margin="5"
+                                      Name="FretLabelTextVisibleIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.FretLabelTextVisibleToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <CheckBox AutomationProperties.LabeledBy="{Binding #FretLabelTextVisibleIsLocalCheckBox}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.FretLabelTextVisible}"
+                                      IsEnabled="{Binding Style.FretLabelTextVisibleIsLocal}"
+                                      Margin="5"
+                                      ToolTip.Tip="{Binding Style.FretLabelTextVisibleToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.SelectedFretLabelTextAlignmentLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.FretLabelTextAlignmentIsLocal}"
+                                      Margin="5"
+                                      Name="FretLabelTextAlignmentIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.SelectedFretLabelTextAlignmentToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ComboBox AutomationProperties.LabeledBy="{Binding #FretLabelTextAlignmentIsLocalCheckBox}"
+                                      Height="25"
+                                      IsEnabled="{Binding Style.FretLabelTextAlignmentIsLocal}"
+                                      ItemsSource="{Binding Style.FretLabelTextAlignments}"
+                                      Margin="5"
+                                      SelectedIndex="{Binding Style.SelectedFretLabelTextAlignmentIndex}"
+                                      Classes="clean"
+                                      ToolTip.Tip="{Binding Style.SelectedFretLabelTextAlignmentToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.FretLabelGridPaddingLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.FretLabelGridPaddingIsLocal}"
+                                      Margin="5"
+                                      Name="FretLabelGridPaddingIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.FretLabelGridPaddingToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <NumericUpDown AutomationProperties.LabeledBy="{Binding #FretLabelGridPaddingIsLocalCheckBox}"
+                                               Height="25"
+                                               HorizontalContentAlignment="Center"
+                                               IsEnabled="{Binding Style.FretLabelGridPaddingIsLocal}"
+                                               Margin="5"
+                                               Classes="pixel"
+                                               ToolTip.Tip="{Binding Style.FretLabelGridPaddingToolTip}"
+                                               Value="{Binding Style.FretLabelGridPadding}"
+                                               VerticalAlignment="Center"
+                                               VerticalContentAlignment="Center"
+                                               Width="80" />
+                        </StackPanel>
+                    </StackPanel>
+                </local:GroupBox>
+            </StackPanel>
+        </StackPanel>
+        <WrapPanel FlowDirection="RightToLeft">
+            <StackPanel FlowDirection="LeftToRight"
+                        Orientation="Horizontal">
+                <Button AutomationProperties.Name="{Binding Style.ResetLabel}"
+                        Command="{Binding Style.Reset}"
+                        IsEnabled="{Binding Style.IsEditable}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding Style.ResetToolTip}">
+                    <Image Height="16"
+                                            Source="/Resources/reset16.png"
+                                            Width="16" />
+                </Button>
+                <Button Command="{Binding Apply}"
+                        Content="{x:Static vm:AppViewModel.ApplyLabel}"
+                        Margin="5"
+                        Classes="clean"
+                        Width="75" />
+                <Button Command="{Binding Accept}"
+                        Content="{x:Static vm:AppViewModel.AcceptLabel}"
+                        Margin="5"
+                        Classes="clean"
+                        Width="75" />
+                <Button Command="{Binding Cancel}"
+                        Content="{x:Static vm:AppViewModel.CancelLabel}"
+                        Margin="5"
+                        Classes="clean"
+                        Width="75" />
+            </StackPanel>
+        </WrapPanel>
+    </StackPanel>
+</local:ChordiousWindow>

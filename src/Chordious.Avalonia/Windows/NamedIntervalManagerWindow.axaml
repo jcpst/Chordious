@@ -1,0 +1,137 @@
+<local:ChordiousWindow Height="300"
+        MinHeight="300"
+        MinWidth="400"
+        Title="{Binding Title}"
+        Width="400"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.NamedIntervalManagerWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Close, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <WrapPanel Grid.Row="0"
+                   Margin="5,0">
+            <Label Content="{Binding UserNamedIntervalGroupLabel}"
+                   FontWeight="Bold"
+                   Name="UserNamedIntervalGroupLabel"
+                   Target="{Binding #UserNamedIntervalsListView}"
+                   ToolTip.Tip="{Binding UserNamedIntervalGroupToolTip}" />
+        </WrapPanel>
+        <ListBox AutomationProperties.LabeledBy="{Binding #UserNamedIntervalGroupLabel}"
+                  Grid.Row="1"
+                  ItemsSource="{Binding UserNamedIntervals}"
+                  Margin="5"
+                  Name="UserNamedIntervalsListView"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  SelectedIndex="{Binding SelectedUserNamedIntervalIndex}">
+            <ListBox.KeyBindings>
+                <KeyBinding Command="{Binding EditNamedInterval}" Gesture="Enter" />
+                <KeyBinding Command="{Binding EditNamedInterval}" Gesture="Space" />
+            </ListBox.KeyBindings>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding LongName}" local:Gestures.DoubleTapCommand="{Binding DataContext.EditNamedInterval, RelativeSource={RelativeSource AncestorType=Window}}">
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ContextMenu>
+                <ContextMenu Name="UserNamedIntervalContextMenu">
+                    <MenuItem Command="{Binding AddNamedInterval}"
+                              Header="{x:Static vm:NamedIntervalManagerViewModel.AddNamedIntervalLabel}"
+                              ToolTip.Tip="{Binding AddNamedIntervalToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/add16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding EditNamedInterval}"
+                              Header="{Binding EditNamedIntervalLabel}"
+                              ToolTip.Tip="{Binding EditNamedIntervalToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/edit16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding DeleteNamedInterval}"
+                              Header="{Binding DeleteNamedIntervalLabel}"
+                              ToolTip.Tip="{Binding DeleteNamedIntervalToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/remove16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+        <WrapPanel Grid.Row="2"
+                   Margin="5,0">
+            <Label Content="{Binding DefaultNamedIntervalGroupLabel}"
+                   FontWeight="Bold"
+                   Name="DefaultNamedIntervalGroupLabel"
+                   Target="{Binding #DefaultNamedIntervalsListView}"
+                   ToolTip.Tip="{Binding DefaultNamedIntervalGroupToolTip}" />
+        </WrapPanel>
+        <ListBox AutomationProperties.LabeledBy="{Binding #DefaultNamedIntervalGroupLabel}"
+                  Grid.Row="3"
+                  ItemsSource="{Binding DefaultNamedIntervals}"
+                  Margin="5"
+                  Name="DefaultNamedIntervalsListView"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  SelectedIndex="{Binding SelectedDefaultNamedIntervalIndex}">
+            <ListBox.KeyBindings>
+                <KeyBinding Command="{Binding EditNamedInterval}" Gesture="Enter" />
+                <KeyBinding Command="{Binding EditNamedInterval}" Gesture="Space" />
+            </ListBox.KeyBindings>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding LongName}" local:Gestures.DoubleTapCommand="{Binding DataContext.EditNamedInterval, RelativeSource={RelativeSource AncestorType=Window}}">
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <WrapPanel Grid.Row="4"
+                   HorizontalAlignment="Center">
+            <StackPanel FlowDirection="LeftToRight"
+                        Orientation="Horizontal">
+                <Button AutomationProperties.Name="{x:Static vm:NamedIntervalManagerViewModel.AddNamedIntervalLabel}"
+                        Command="{Binding AddNamedInterval}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding AddNamedIntervalToolTip}">
+                    <Image Height="16"
+                                            Margin="5"
+                                            Source="/Resources/add16.png"
+                                            Width="16" />
+                </Button>
+                <Button AutomationProperties.Name="{Binding EditNamedIntervalLabel}"
+                        Command="{Binding EditNamedInterval}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding EditNamedIntervalToolTip}">
+                    <Image Height="16"
+                                            Margin="5"
+                                            Source="/Resources/edit16.png"
+                                            Width="16" />
+                </Button>
+                <Button AutomationProperties.Name="{Binding DeleteNamedIntervalLabel}"
+                        Command="{Binding DeleteNamedInterval}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding DeleteNamedIntervalToolTip}">
+                    <Image Height="16"
+                                            Margin="5"
+                                            Source="/Resources/remove16.png"
+                                            Width="16" />
+                </Button>
+            </StackPanel>
+        </WrapPanel>
+    </Grid>
+</local:ChordiousWindow>
