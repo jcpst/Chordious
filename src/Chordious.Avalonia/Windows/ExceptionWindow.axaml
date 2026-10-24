@@ -1,0 +1,55 @@
+<local:ChordiousWindow
+        MinHeight="100"
+        CanResize="False"
+        SizeToContent="Height"
+        Title="{Binding Title}"
+        Width="500"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.ExceptionWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Accept, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Image Margin="15"
+                   Source="/Resources/error32.png"
+                   VerticalAlignment="Top" />
+            <StackPanel VerticalAlignment="Center"
+                        Width="420">
+                <Label Focusable="True"
+                       Margin="5"
+                       Name="MessageLabel">
+                    <Label.Content>
+                        <TextBlock Text="{Binding Message}"
+                                   TextWrapping="Wrap" />
+                    </Label.Content>
+                </Label>
+                <Expander Header="{Binding DetailsLabel}"
+                          Margin="5"
+                          ToolTip.Tip="{Binding DetailsToolTip}">
+                    <TextBox Height="100"
+                             IsReadOnly="True"
+                             Margin="5"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             Text="{Binding Details, Mode=OneWay}"
+                             TextWrapping="Wrap" />
+                </Expander>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Command="{Binding Accept}"
+                    Content="{x:Static vm:AppViewModel.AcceptLabel}"
+                    HorizontalAlignment="Right"
+                    IsDefault="True"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+        </StackPanel>
+    </StackPanel>
+</local:ChordiousWindow>

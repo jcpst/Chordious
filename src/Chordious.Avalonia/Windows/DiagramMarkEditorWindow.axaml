@@ -1,0 +1,406 @@
+<local:ChordiousWindow
+        MinWidth="320"
+        CanResize="False"
+        SizeToContent="WidthAndHeight"
+        Title="{Binding Title}"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.DiagramMarkEditorWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Cancel, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <StackPanel>
+        <local:GroupBox Header="{Binding PropertiesGroupLabel}"
+                  Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{Binding TextLabel}"
+                       Margin="5"
+                       Name="TextLabel"
+                       Target="{Binding #TextTextBox}"
+                       ToolTip.Tip="{Binding TextToolTip}"
+                       Width="120" />
+                <TextBox AutomationProperties.LabeledBy="{Binding #TextLabel}"
+                         HorizontalContentAlignment="Center"
+                         Margin="5"
+                         MaxLines="1"
+                         Name="TextTextBox"
+                         SelectedText=""
+                         Text="{Binding Text}"
+                         ToolTip.Tip="{Binding TextToolTip}"
+                         Width="80" />
+                <Label Content="{Binding SelectedMarkTypeLabel}"
+                       Height="25"
+                       Margin="25,5,5,5"
+                       Name="MarkTypeLabel"
+                       Target="{Binding #MarkTypeComboBox}"
+                       ToolTip.Tip="{Binding SelectedMarkTypeToolTip}"
+                       VerticalAlignment="Center"
+                       VerticalContentAlignment="Center"
+                       Width="120" />
+                <ComboBox AutomationProperties.LabeledBy="{Binding #MarkTypeLabel}"
+                          Height="25"
+                          ItemsSource="{Binding MarkTypes}"
+                          Margin="5"
+                          Name="MarkTypeComboBox"
+                          SelectedIndex="{Binding SelectedMarkTypeIndex}"
+                          Classes="clean"
+                          ToolTip.Tip="{Binding SelectedMarkTypeToolTip}"
+                          VerticalAlignment="Center"
+                          VerticalContentAlignment="Center"
+                          Width="80" />
+            </StackPanel>
+        </local:GroupBox>
+        <StackPanel IsEnabled="{Binding Style.IsEditable}"
+                    Orientation="Horizontal">
+            <StackPanel>
+                <local:GroupBox Header="{Binding Style.MarkBackgroundGroupLabel}"
+                          Margin="5">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.MarkVisibleLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkVisibleIsLocal}"
+                                      Margin="5"
+                                      Name="MarkVisibleIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.MarkVisibleToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <CheckBox AutomationProperties.LabeledBy="{Binding #MarkVisibleIsLocalCheckBox}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkVisible}"
+                                      IsEnabled="{Binding Style.MarkVisibleIsLocal}"
+                                      Margin="5"
+                                      ToolTip.Tip="{Binding Style.MarkVisibleToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.SelectedMarkShapeLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkShapeIsLocal}"
+                                      Margin="5"
+                                      Name="MarkShapeIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.SelectedMarkShapeToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ComboBox AutomationProperties.LabeledBy="{Binding #MarkShapeIsLocalCheckBox}"
+                                      Height="25"
+                                      IsEnabled="{Binding Style.MarkShapeIsLocal}"
+                                      ItemsSource="{Binding Style.MarkShapes}"
+                                      Margin="5"
+                                      SelectedIndex="{Binding Style.SelectedMarkShapeIndex}"
+                                      Classes="clean"
+                                      ToolTip.Tip="{Binding Style.SelectedMarkShapeToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.MarkColorLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkColorIsLocal}"
+                                      Margin="5"
+                                      Name="MarkColorIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.MarkColorToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ColorPicker AutomationProperties.LabeledBy="{Binding #MarkColorIsLocalCheckBox}"
+                                              Height="25"
+                                              IsEnabled="{Binding Style.MarkColorIsLocal}"
+                                              Margin="5"
+                                              Color="{Binding Style.MarkColor, Converter={StaticResource StringToColorConverter}}"
+                                              ToolTip.Tip="{Binding Style.MarkColorToolTip}"
+                                              VerticalAlignment="Center"
+                                              Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.MarkOpacityLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkOpacityIsLocal}"
+                                      Margin="5"
+                                      Name="MarkOpacityIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.MarkOpacityToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <NumericUpDown AutomationProperties.LabeledBy="{Binding #MarkOpacityIsLocalCheckBox}"
+                                               Height="25"
+                                               HorizontalContentAlignment="Center"
+                                               IsEnabled="{Binding Style.MarkOpacityIsLocal}"
+                                               Margin="5"
+                                               Classes="percent boundpercent"
+                                               ToolTip.Tip="{Binding Style.MarkOpacityToolTip}"
+                                               Value="{Binding Style.MarkOpacity}"
+                                               VerticalAlignment="Center"
+                                               VerticalContentAlignment="Center"
+                                               Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.MarkRadiusRatioLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkRadiusRatioIsLocal}"
+                                      Margin="5"
+                                      Name="MarkRadiusRatioIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.MarkRadiusRatioToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <NumericUpDown AutomationProperties.LabeledBy="{Binding #MarkRadiusRatioIsLocalCheckBox}"
+                                               Height="25"
+                                               HorizontalContentAlignment="Center"
+                                               IsEnabled="{Binding Style.MarkRadiusRatioIsLocal}"
+                                               Margin="5"
+                                               Classes="percent boundpercent"
+                                               ToolTip.Tip="{Binding Style.MarkRadiusRatioToolTip}"
+                                               Value="{Binding Style.MarkRadiusRatio}"
+                                               VerticalAlignment="Center"
+                                               VerticalContentAlignment="Center"
+                                               Width="80" />
+                        </StackPanel>
+                    </StackPanel>
+                </local:GroupBox>
+                <local:GroupBox Header="{Binding Style.MarkBorderGroupLabel}"
+                          Margin="5">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.MarkBorderColorLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkBorderColorIsLocal}"
+                                      Margin="5"
+                                      Name="MarkBorderColorIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.MarkBorderColorToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ColorPicker AutomationProperties.LabeledBy="{Binding #MarkBorderColorIsLocalCheckBox}"
+                                              Height="25"
+                                              IsEnabled="{Binding Style.MarkBorderColorIsLocal}"
+                                              Margin="5"
+                                              Color="{Binding Style.MarkBorderColor, Converter={StaticResource StringToColorConverter}}"
+                                              ToolTip.Tip="{Binding Style.MarkBorderColorToolTip}"
+                                              VerticalAlignment="Center"
+                                              Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.MarkBorderThicknessLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkBorderThicknessIsLocal}"
+                                      Margin="5"
+                                      Name="MarkBorderThicknessIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.MarkBorderThicknessToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <NumericUpDown AutomationProperties.LabeledBy="{Binding #MarkBorderThicknessIsLocalCheckBox}"
+                                               Height="25"
+                                               HorizontalContentAlignment="Center"
+                                               IsEnabled="{Binding Style.MarkBorderThicknessIsLocal}"
+                                               Margin="5"
+                                               Classes="pixel"
+                                               ToolTip.Tip="{Binding Style.MarkBorderThicknessToolTip}"
+                                               Value="{Binding Style.MarkBorderThickness}"
+                                               VerticalAlignment="Center"
+                                               VerticalContentAlignment="Center"
+                                               Width="80" />
+                        </StackPanel>
+                    </StackPanel>
+                </local:GroupBox>
+            </StackPanel>
+            <StackPanel>
+                <local:GroupBox Header="{Binding Style.MarkTextGroupLabel}"
+                          Margin="5">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.MarkTextVisibleLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkTextVisibleIsLocal}"
+                                      Margin="5"
+                                      Name="MarkTextVisibleIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.MarkTextVisibleToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <CheckBox AutomationProperties.LabeledBy="{Binding #MarkTextVisibleIsLocalCheckBox}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkTextVisible}"
+                                      IsEnabled="{Binding Style.MarkTextVisibleIsLocal}"
+                                      Margin="5"
+                                      ToolTip.Tip="{Binding Style.MarkTextVisibleToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.SelectedMarkTextAlignmentLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkTextAlignmentIsLocal}"
+                                      Margin="5"
+                                      Name="MarkTextAlignmentIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.SelectedMarkTextAlignmentToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ComboBox AutomationProperties.LabeledBy="{Binding #MarkTextAlignmentIsLocalCheckBox}"
+                                      Height="25"
+                                      IsEnabled="{Binding Style.MarkTextAlignmentIsLocal}"
+                                      ItemsSource="{Binding Style.MarkTextAlignments}"
+                                      Margin="5"
+                                      SelectedIndex="{Binding Style.SelectedMarkTextAlignmentIndex}"
+                                      Classes="clean"
+                                      ToolTip.Tip="{Binding Style.SelectedMarkTextAlignmentToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.MarkFontFamilyLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkFontFamilyIsLocal}"
+                                      Margin="5"
+                                      Name="MarkFontFamilyIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.MarkFontFamilyToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ComboBox AutomationProperties.LabeledBy="{Binding #MarkFontFamilyIsLocalCheckBox}"
+                                      Height="25"
+                                      IsEditable="True"
+                                      IsEnabled="{Binding Style.MarkFontFamilyIsLocal}"
+                                      ItemsSource="{Binding Style.FontFamilies}"
+                                      Margin="5"
+                                      SelectedItem="{Binding Style.MarkFontFamily}"
+                                      Classes="clean"
+                                      Text="{Binding Style.MarkFontFamily, UpdateSourceTrigger=LostFocus}"
+                                      ToolTip.Tip="{Binding Style.MarkFontFamilyToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.SelectedMarkTextStyleLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkTextStyleIsLocal}"
+                                      Margin="5"
+                                      Name="MarkTextStyleIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.SelectedMarkTextStyleToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ComboBox AutomationProperties.LabeledBy="{Binding #MarkTextStyleIsLocalCheckBox}"
+                                      Height="25"
+                                      IsEnabled="{Binding Style.MarkTextStyleIsLocal}"
+                                      ItemsSource="{Binding Style.MarkTextStyles}"
+                                      Margin="5"
+                                      SelectedIndex="{Binding Style.SelectedMarkTextStyleIndex}"
+                                      Classes="clean"
+                                      ToolTip.Tip="{Binding Style.SelectedMarkTextStyleToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.MarkTextColorLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkTextColorIsLocal}"
+                                      Margin="5"
+                                      Name="MarkTextColorIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.MarkTextColorToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <ColorPicker AutomationProperties.LabeledBy="{Binding #MarkTextColorIsLocalCheckBox}"
+                                              Height="25"
+                                              IsEnabled="{Binding Style.MarkTextColorIsLocal}"
+                                              Margin="5"
+                                              Color="{Binding Style.MarkTextColor, Converter={StaticResource StringToColorConverter}}"
+                                              ToolTip.Tip="{Binding Style.MarkTextColorToolTip}"
+                                              VerticalAlignment="Center"
+                                              Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.MarkTextOpacityLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkTextOpacityIsLocal}"
+                                      Margin="5"
+                                      Name="MarkTextOpacityIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.MarkTextOpacityToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <NumericUpDown AutomationProperties.LabeledBy="{Binding #MarkTextOpacityIsLocalCheckBox}"
+                                               Height="25"
+                                               HorizontalContentAlignment="Center"
+                                               IsEnabled="{Binding Style.MarkTextOpacityIsLocal}"
+                                               Margin="5"
+                                               Classes="percent boundpercent"
+                                               ToolTip.Tip="{Binding Style.MarkTextOpacityToolTip}"
+                                               Value="{Binding Style.MarkTextOpacity}"
+                                               VerticalAlignment="Center"
+                                               VerticalContentAlignment="Center"
+                                               Width="80" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Content="{Binding Style.MarkTextSizeRatioLabel}"
+                                      Height="25"
+                                      IsChecked="{Binding Style.MarkTextSizeRatioIsLocal}"
+                                      Margin="5"
+                                      Name="MarkTextSizeRatioIsLocalCheckBox"
+                                      ToolTip.Tip="{Binding Style.MarkTextSizeRatioToolTip}"
+                                      VerticalAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Width="120" />
+                            <NumericUpDown AutomationProperties.LabeledBy="{Binding #MarkTextSizeRatioIsLocalCheckBox}"
+                                               Height="25"
+                                               HorizontalContentAlignment="Center"
+                                               IsEnabled="{Binding Style.MarkTextSizeRatioIsLocal}"
+                                               Margin="5"
+                                               Classes="percent boundpercent"
+                                               ToolTip.Tip="{Binding Style.MarkTextSizeRatioToolTip}"
+                                               Value="{Binding Style.MarkTextSizeRatio}"
+                                               VerticalAlignment="Center"
+                                               VerticalContentAlignment="Center"
+                                               Width="80" />
+                        </StackPanel>
+                    </StackPanel>
+                </local:GroupBox>
+            </StackPanel>
+        </StackPanel>
+        <WrapPanel FlowDirection="RightToLeft">
+            <StackPanel FlowDirection="LeftToRight"
+                        Orientation="Horizontal">
+                <Button AutomationProperties.Name="{Binding Style.ResetLabel}"
+                        Command="{Binding Style.Reset}"
+                        IsEnabled="{Binding Style.IsEditable}"
+                        Margin="5"
+                        Classes="clean noborder"
+                        ToolTip.Tip="{Binding Style.ResetToolTip}">
+                    <Image Height="16"
+                                            Source="/Resources/reset16.png"
+                                            Width="16" />
+                </Button>
+                <Button Command="{Binding Apply}"
+                        Content="{x:Static vm:AppViewModel.ApplyLabel}"
+                        Margin="5"
+                        Classes="clean"
+                        Width="75" />
+                <Button Command="{Binding Accept}"
+                        Content="{x:Static vm:AppViewModel.AcceptLabel}"
+                        Margin="5"
+                        Classes="clean"
+                        Width="75" />
+                <Button Command="{Binding Cancel}"
+                        Content="{x:Static vm:AppViewModel.CancelLabel}"
+                        Margin="5"
+                        Classes="clean"
+                        Width="75" />
+            </StackPanel>
+        </WrapPanel>
+    </StackPanel>
+</local:ChordiousWindow>

@@ -1,0 +1,74 @@
+<local:ChordiousWindow
+        MinWidth="400"
+        CanResize="False"
+        SizeToContent="WidthAndHeight"
+        Title="{Binding Title}"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.InstrumentEditorWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Cancel, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Label Content="{Binding NameLabel}"
+               Grid.Column="0"
+               Grid.Row="0"
+               Margin="5"
+               Name="NameLabel"
+               Target="{Binding #NameTextBox}"
+               ToolTip.Tip="{Binding NameToolTip}" />
+        <TextBox AutomationProperties.LabeledBy="{Binding #NameLabel}"
+                 Grid.Column="1"
+                 IsReadOnly="{Binding ReadOnly}"
+                 Margin="5"
+                 MaxLines="1"
+                 Name="NameTextBox"
+                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                 ToolTip.Tip="{Binding NameToolTip}" />
+        <Label Content="{Binding NumStringsLabel}"
+               Grid.Column="2"
+               Margin="5"
+               Name="NumStringsLabel"
+               Target="{Binding #NumStringsUpDown}"
+               ToolTip.Tip="{Binding NumStringsToolTip}" />
+        <NumericUpDown Classes="int" AutomationProperties.LabeledBy="{Binding #NumStringsLabel}"
+                            Grid.Column="3"
+                            HorizontalContentAlignment="Center"
+                            IsReadOnly="{Binding DataContext.IsNew, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InverseBoolConverter}}"
+                            Margin="5"
+                            Minimum="2"
+                            Name="NumStringsUpDown"
+                            ToolTip.Tip="{Binding NumStringsToolTip}"
+                            Value="{Binding NumStrings}" />
+        <StackPanel Grid.Column="0"
+                    Grid.ColumnSpan="4"
+                    Grid.Row="1"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Command="{Binding Accept}"
+                    Content="{x:Static vm:AppViewModel.AcceptLabel}"
+                    IsDefault="True"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+            <Button Command="{Binding Cancel}"
+                    Content="{x:Static vm:AppViewModel.CancelLabel}"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+        </StackPanel>
+    </Grid>
+</local:ChordiousWindow>

@@ -1,0 +1,178 @@
+<Application x:Class="Chordious.Avalonia.App"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Chordious.Avalonia"
+             RequestedThemeVariant="Light">
+    <Application.Resources>
+        <local:IdleBoolToWaitCursorConverter x:Key="IdleBoolToWaitCursorConverter" />
+        <local:StringToColorConverter x:Key="StringToColorConverter" />
+        <local:AltTextToTextConverter x:Key="AltTextToTextConverter" />
+        <local:InverseBoolConverter x:Key="InverseBoolConverter" />
+        <local:BoolToBoldConverter x:Key="BoolToBoldConverter" />
+
+        <!-- Compact spinner (small stacked arrows), closer to the WPF toolkit's UpDown controls -->
+        <ControlTheme x:Key="{x:Type ButtonSpinner}"
+                      TargetType="ButtonSpinner">
+            <Setter Property="Background" Value="{DynamicResource TextControlBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TextControlBorderBrush}" />
+            <Setter Property="BorderThickness" Value="{DynamicResource TextControlBorderThemeThickness}" />
+            <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            ClipToBounds="True">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Padding="{TemplateBinding Padding}"
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            <Grid Grid.Column="1"
+                                  IsVisible="{TemplateBinding ShowButtonSpinner}"
+                                  RowDefinitions="*,*">
+                                <RepeatButton Name="PART_IncreaseButton"
+                                              Classes="spin"
+                                              Grid.Row="0">
+                                    <Path Data="M0,4 L4,0 L8,4 Z" />
+                                </RepeatButton>
+                                <RepeatButton Name="PART_DecreaseButton"
+                                              Classes="spin"
+                                              Grid.Row="1">
+                                    <Path Data="M0,0 L8,0 L4,4 Z" />
+                                </RepeatButton>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </ControlTheme>
+
+        <ControlTheme x:Key="{x:Type local:GroupBox}"
+                      TargetType="local:GroupBox">
+            <Setter Property="BorderBrush" Value="#C8C8C8" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4"
+                            Padding="4">
+                        <DockPanel>
+                            <ContentPresenter Name="PART_HeaderPresenter"
+                                              Content="{TemplateBinding Header}"
+                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                              DockPanel.Dock="Top"
+                                              FontWeight="SemiBold"
+                                              RecognizesAccessKey="True"
+                                              Margin="4,0,4,2" />
+                            <ContentPresenter Name="PART_ContentPresenter"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        </DockPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </ControlTheme>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme DensityStyle="Compact" />
+        <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+
+        <!-- Replaces WPF's AutoDisableImage: dim icons when their parent is disabled -->
+        <Style Selector="Image:disabled">
+            <Setter Property="Opacity" Value="0.35" />
+        </Style>
+
+        <!-- Replaces the WPF CleanButton / CleanButtonNoBorder styles -->
+        <Style Selector="Button.clean">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="CornerRadius" Value="0" />
+        </Style>
+        <Style Selector="Button.clean.noborder">
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+        <Style Selector="Button.clean:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#BEE6FD" />
+        </Style>
+        <Style Selector="Button.clean:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#9CD3F5" />
+        </Style>
+        <Style Selector="Button.clean:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="DarkGray" />
+        </Style>
+
+        <Style Selector="ComboBox.clean">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+
+        <!-- Replaces the Xceed IntegerUpDown / DoubleUpDown styles -->
+        <!-- The layouts were sized for WPF's compact controls, so slim down Fluent's -->
+        <Style Selector="ButtonSpinner /template/ RepeatButton.spin">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="Width" Value="16" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style Selector="ButtonSpinner /template/ RepeatButton.spin:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#BEE6FD" />
+        </Style>
+        <Style Selector="ButtonSpinner /template/ RepeatButton.spin > Path">
+            <Setter Property="Fill" Value="#404040" />
+        </Style>
+        <Style Selector="ButtonSpinner:disabled">
+            <Setter Property="Opacity" Value="0.6" />
+        </Style>
+        <Style Selector="NumericUpDown /template/ TextBox">
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="Padding" Value="4,2" />
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Padding" Value="6,2,0,2" />
+            <Setter Property="MinWidth" Value="72" />
+        </Style>
+        <Style Selector="TabItem">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="MinHeight" Value="28" />
+            <Setter Property="Padding" Value="8,2" />
+        </Style>
+
+        <Style Selector="NumericUpDown.int">
+            <Setter Property="FormatString" Value="0" />
+            <Setter Property="ParsingNumberStyle" Value="Integer" />
+        </Style>
+        <Style Selector="NumericUpDown.pixel">
+            <Setter Property="Minimum" Value="0" />
+            <Setter Property="FormatString" Value="N" />
+        </Style>
+        <Style Selector="NumericUpDown.percent">
+            <Setter Property="Minimum" Value="0" />
+            <Setter Property="Increment" Value="0.01" />
+            <Setter Property="FormatString" Value="P0" />
+        </Style>
+        <Style Selector="NumericUpDown.boundpercent">
+            <Setter Property="Maximum" Value="1" />
+        </Style>
+
+        <Style Selector="ColorPicker">
+            <Setter Property="IsAlphaEnabled" Value="False" />
+            <Setter Property="IsAlphaVisible" Value="False" />
+        </Style>
+    </Application.Styles>
+</Application>

@@ -1,0 +1,75 @@
+<local:ChordiousWindow Height="480"
+        MinHeight="480"
+        MinWidth="480"
+        Title="{Binding Title}"
+        Width="480"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.AdvancedDataWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Cancel, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <DataGrid AutoGenerateColumns="False"
+                  ItemsSource="{Binding Items}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Key}"
+                                    CanUserReorder="False"
+                                    ClipboardContentBinding="{Binding Key}"
+                                    IsReadOnly="True"
+                                    Width="Auto">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{Binding DataContext.KeyHeaderLabel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Value}"
+                                    CanUserReorder="False"
+                                    CanUserSort="False"
+                                    ClipboardContentBinding="{Binding Value}"
+                                    Width="*">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{Binding DataContext.ValueHeaderLabel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Level}"
+                                    CanUserReorder="False"
+                                    ClipboardContentBinding="{Binding Level}"
+                                    IsReadOnly="True"
+                                    Width="Auto">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="{Binding DataContext.LevelHeaderLabel, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="1"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <StackPanel FlowDirection="LeftToRight"
+                        Orientation="Horizontal">
+                <Button Command="{Binding Apply}"
+                        Content="{x:Static vm:AppViewModel.ApplyLabel}"
+                        Margin="5"
+                        Classes="clean"
+                        Width="75" />
+                <Button Command="{Binding Accept}"
+                        Content="{x:Static vm:AppViewModel.AcceptLabel}"
+                        Margin="5"
+                        Classes="clean"
+                        Width="75" />
+                <Button Command="{Binding Cancel}"
+                        Content="{x:Static vm:AppViewModel.CancelLabel}"
+                        Margin="5"
+                        Classes="clean"
+                        Width="75" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</local:ChordiousWindow>

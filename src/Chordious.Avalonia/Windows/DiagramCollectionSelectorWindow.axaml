@@ -1,0 +1,54 @@
+<local:ChordiousWindow
+        MinWidth="400"
+        CanResize="False"
+        SizeToContent="WidthAndHeight"
+        Title="{Binding Title}"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.DiagramCollectionSelectorWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Cancel, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="{Binding CollectionNameLabel}"
+                   Height="25"
+                   Margin="5"
+                   Name="CollectionNameLabel"
+                   Target="{Binding #CollectionNameComboBox}"
+                   ToolTip.Tip="{Binding CollectionNameToolTip}"
+                   VerticalAlignment="Center"
+                   VerticalContentAlignment="Center" />
+            <ComboBox AutomationProperties.LabeledBy="{Binding #CollectionNameLabel}"
+                      Height="25"
+                      IsEditable="True"
+                      ItemsSource="{Binding CollectionNames}"
+                      Margin="5"
+                      Name="CollectionNameComboBox"
+                      SelectedItem="{Binding CollectionName}"
+                      Classes="clean"
+                      Text="{Binding CollectionName, UpdateSourceTrigger=LostFocus}"
+                      ToolTip.Tip="{Binding CollectionNameToolTip}"
+                      VerticalAlignment="Center"
+                      VerticalContentAlignment="Center"
+                      Width="270" />
+        </StackPanel>
+        <StackPanel HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Command="{Binding Accept}"
+                    Content="{x:Static vm:AppViewModel.AcceptLabel}"
+                    IsDefault="True"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+            <Button Command="{Binding Cancel}"
+                    Content="{x:Static vm:AppViewModel.CancelLabel}"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+        </StackPanel>
+    </StackPanel>
+</local:ChordiousWindow>

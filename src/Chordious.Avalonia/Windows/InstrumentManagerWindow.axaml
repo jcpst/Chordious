@@ -1,0 +1,236 @@
+<local:ChordiousWindow Height="600"
+        MinHeight="600"
+        MinWidth="800"
+        Title="{Binding Title}"
+        Width="800"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.InstrumentManagerWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Close, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <WrapPanel Grid.Column="0"
+                   Grid.Row="0">
+            <Label Content="{Binding UserInstrumentsGroupLabel}"
+                   FontWeight="Bold"
+                   Margin="5,0"
+                   Name="UserInstrumentsGroupLabel"
+                   Target="{Binding #UserInstrumentsListView}"
+                   ToolTip.Tip="{Binding UserInstrumentsGroupToolTip}" />
+        </WrapPanel>
+        <ListBox AutomationProperties.Name="{Binding #UserInstrumentsGroupLabel}"
+                 Grid.Column="0"
+                 Grid.Row="1"
+                 ItemsSource="{Binding UserInstruments}"
+                 Margin="5,0"
+                 Name="UserInstrumentsListView"
+                 SelectedIndex="{Binding SelectedUserInstrumentIndex}">
+            <ListBox.KeyBindings>
+                <KeyBinding Command="{Binding EditInstrument}" Gesture="Enter" />
+                <KeyBinding Command="{Binding EditInstrument}" Gesture="Space" />
+            </ListBox.KeyBindings>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" local:Gestures.DoubleTapCommand="{Binding DataContext.EditInstrument, RelativeSource={RelativeSource AncestorType=Window}}">
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ContextMenu>
+                <ContextMenu Name="UserInstrumentsContextMenu">
+                    <MenuItem Command="{Binding AddInstrument}"
+                              Header="{Binding AddInstrumentLabel}"
+                              ToolTip.Tip="{Binding AddInstrumentToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/add16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding EditInstrument}"
+                              Header="{Binding EditInstrumentLabel}"
+                              ToolTip.Tip="{Binding EditInstrumentToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/edit16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding DeleteInstrument}"
+                              Header="{Binding DeleteInstrumentLabel}"
+                              ToolTip.Tip="{Binding DeleteInstrumentToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/remove16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+        <WrapPanel Grid.Column="0"
+                   Grid.Row="2">
+            <Label Content="{Binding DefaultInstrumentsGroupLabel}"
+                   FontWeight="Bold"
+                   Margin="5,0"
+                   Name="DefaultInstrumentsGroupLabel"
+                   Target="{Binding #DefaultInstrumentsListView}"
+                   ToolTip.Tip="{Binding DefaultInstrumentsGroupToolTip}" />
+        </WrapPanel>
+        <ListBox AutomationProperties.LabeledBy="{Binding #DefaultInstrumentsGroupLabel}"
+                 Grid.Column="0"
+                 Grid.Row="3"
+                 ItemsSource="{Binding DefaultInstruments}"
+                 Margin="5,0"
+                 Name="DefaultInstrumentsListView"
+                 SelectedIndex="{Binding SelectedDefaultInstrumentIndex}">
+            <ListBox.KeyBindings>
+                <KeyBinding Command="{Binding EditInstrument}" Gesture="Enter" />
+                <KeyBinding Command="{Binding EditInstrument}" Gesture="Space" />
+            </ListBox.KeyBindings>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" local:Gestures.DoubleTapCommand="{Binding DataContext.EditInstrument, RelativeSource={RelativeSource AncestorType=Window}}">
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <WrapPanel Grid.Column="1"
+                   Grid.Row="0">
+            <Label Content="{Binding TuningsGroupLabel}"
+                   FontWeight="Bold"
+                   Name="TuningsGroupLabel"
+                   Target="{Binding #TuningsListView}"
+                   ToolTip.Tip="{Binding TuningsGroupToolTip}" />
+        </WrapPanel>
+        <ListBox AutomationProperties.LabeledBy="{Binding #TuningsGroupLabel}"
+                 Grid.Column="1"
+                 Grid.Row="1"
+                 Grid.RowSpan="3"
+                 IsEnabled="{Binding InstrumentIsSelected}"
+                 ItemsSource="{Binding Tunings}"
+                 Name="TuningsListView"
+                 SelectedItem="{Binding SelectedTuning}">
+            <ListBox.KeyBindings>
+                <KeyBinding Command="{Binding EditTuning}" Gesture="Enter" />
+                <KeyBinding Command="{Binding EditTuning}" Gesture="Space" />
+            </ListBox.KeyBindings>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding LongName}" local:Gestures.DoubleTapCommand="{Binding DataContext.EditTuning, RelativeSource={RelativeSource AncestorType=Window}}">
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ContextMenu>
+                <ContextMenu Name="TuningContextMenu">
+                    <MenuItem Command="{Binding AddTuning}"
+                              Header="{Binding AddTuningLabel}"
+                              ToolTip.Tip="{Binding AddTuningToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/add16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding EditTuning}"
+                              Header="{Binding EditTuningLabel}"
+                              ToolTip.Tip="{Binding EditTuningToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/edit16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding CopyTuning}"
+                              Header="{Binding CopyTuningLabel}"
+                              ToolTip.Tip="{Binding CopyTuningToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/copy16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding DeleteTuning}"
+                              Header="{Binding DeleteTuningLabel}"
+                              ToolTip.Tip="{Binding DeleteTuningToolTip}">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/remove16.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+        <StackPanel Grid.Column="0"
+                    Grid.Row="4"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button AutomationProperties.Name="{Binding AddInstrumentLabel}"
+                    Command="{Binding AddInstrument}"
+                    Margin="5"
+                    Classes="clean noborder"
+                    ToolTip.Tip="{Binding AddInstrumentToolTip}">
+                <Image Height="16"
+                                        Margin="5"
+                                        Source="/Resources/add16.png"
+                                        Width="16" />
+            </Button>
+            <Button AutomationProperties.Name="{Binding EditInstrumentLabel}"
+                    Command="{Binding EditInstrument}"
+                    Margin="5"
+                    Classes="clean noborder"
+                    ToolTip.Tip="{Binding EditInstrumentToolTip}">
+                <Image Height="16"
+                                        Margin="5"
+                                        Source="/Resources/edit16.png"
+                                        Width="16" />
+            </Button>
+            <Button AutomationProperties.Name="{Binding DeleteInstrumentLabel}"
+                    Command="{Binding DeleteInstrument}"
+                    Margin="5"
+                    Classes="clean noborder"
+                    ToolTip.Tip="{Binding DeleteInstrumentToolTip}">
+                <Image Height="16"
+                                        Margin="5"
+                                        Source="/Resources/remove16.png"
+                                        Width="16" />
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1"
+                    Grid.Row="4"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+            <Button AutomationProperties.Name="{Binding AddTuningLabel}"
+                    Command="{Binding AddTuning}"
+                    Margin="5"
+                    Classes="clean noborder"
+                    ToolTip.Tip="{Binding AddTuningToolTip}">
+                <Image Height="16"
+                                        Margin="5"
+                                        Source="/Resources/add16.png"
+                                        Width="16" />
+            </Button>
+            <Button AutomationProperties.Name="{Binding EditTuningLabel}"
+                    Command="{Binding EditTuning}"
+                    Margin="5"
+                    Classes="clean noborder"
+                    ToolTip.Tip="{Binding EditTuningToolTip}">
+                <Image Height="16"
+                                        Margin="5"
+                                        Source="/Resources/edit16.png"
+                                        Width="16" />
+            </Button>
+            <Button AutomationProperties.Name="{Binding DeleteTuningLabel}"
+                    Command="{Binding DeleteTuning}"
+                    Margin="5"
+                    Classes="clean noborder"
+                    ToolTip.Tip="{Binding DeleteTuningToolTip}">
+                <Image Height="16"
+                                        Margin="5"
+                                        Source="/Resources/remove16.png"
+                                        Width="16" />
+            </Button>
+        </StackPanel>
+    </Grid>
+</local:ChordiousWindow>

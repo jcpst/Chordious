@@ -1,0 +1,243 @@
+<local:ChordiousWindow Cursor="{Binding IsIdle, Converter={StaticResource IdleBoolToWaitCursorConverter}}"
+        Height="480"
+        Icon="{DynamicResource ChordiousIcon}"
+        MaxWidth="340"
+        MinHeight="300"
+        MinWidth="340"
+        Title="{Binding Title}"
+        Width="340"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Chordious.Avalonia.OptionsWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:vm="using:Chordious.Core.ViewModel"
+        xmlns:local="using:Chordious.Avalonia"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Window.KeyBindings>
+        <KeyBinding Command="{Binding Cancel, Mode=OneWay}" Gesture="Escape" />
+    </Window.KeyBindings>
+    <Grid IsEnabled="{Binding IsIdle}">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0"
+                    Margin="5">
+            <TabItem Header="{x:Static vm:OptionsViewModel.SettingsGroupLabel}">
+                <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                              VerticalScrollBarVisibility="Visible">
+                    <StackPanel>
+                        <local:GroupBox Header="{Binding SettingsBackgroundGroupLabel}"
+                                  Margin="5">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding SelectedRenderBackgroundLabel}"
+                                           Margin="5"
+                                           Name="RenderBackgroundLabel"
+                                           Target="{Binding #RenderBackgroundComboBox}"
+                                           ToolTip.Tip="{Binding SelectedRenderBackgroundToolTip}"
+                                           Width="110" />
+                                    <ComboBox AutomationProperties.LabeledBy="{Binding #RenderBackgroundLabel}"
+                                              ItemsSource="{Binding RenderBackgrounds}"
+                                              Margin="5"
+                                              Name="RenderBackgroundComboBox"
+                                              SelectedIndex="{Binding SelectedRenderBackgroundIndex}"
+                                              Classes="clean"
+                                              ToolTip.Tip="{Binding SelectedRenderBackgroundToolTip}"
+                                              VerticalAlignment="Center"
+                                              Width="100" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding SelectedEditorRenderBackgroundLabel}"
+                                           Margin="5"
+                                           Name="EditorRenderBackgroundLabel"
+                                           Target="{Binding #EditorRenderBackgroundComboBox}"
+                                           ToolTip.Tip="{Binding SelectedEditorRenderBackgroundToolTip}"
+                                           Width="110" />
+                                    <ComboBox AutomationProperties.LabeledBy="{Binding #EditorRenderBackgroundLabel}"
+                                              ItemsSource="{Binding EditorRenderBackgrounds}"
+                                              Margin="5"
+                                              Name="EditorRenderBackgroundComboBox"
+                                              SelectedIndex="{Binding SelectedEditorRenderBackgroundIndex}"
+                                              Classes="clean"
+                                              ToolTip.Tip="{Binding SelectedEditorRenderBackgroundToolTip}"
+                                              VerticalAlignment="Center"
+                                              Width="100" />
+                                </StackPanel>
+                            </StackPanel>
+                        </local:GroupBox>
+                        <local:GroupBox Header="{Binding SettingsIntegrationGroupLabel}"
+                                  Margin="5">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding EnhancedCopyLabel}"
+                                           Margin="5"
+                                           Name="EnhancedCopyLabel"
+                                           Target="{Binding #EnhancedCopyCheckBox}"
+                                           ToolTip.Tip="{Binding EnhancedCopyToolTip}"
+                                           Width="160" />
+                                    <CheckBox AutomationProperties.LabeledBy="{Binding #EnhancedCopyLabel}"
+                                              HorizontalAlignment="Center"
+                                              IsChecked="{Binding EnhancedCopy}"
+                                              Margin="5"
+                                              Name="EnhancedCopyCheckBox"
+                                              ToolTip.Tip="{Binding EnhancedCopyToolTip}"
+                                              VerticalAlignment="Center"
+                                              Width="50" />
+                                </StackPanel>
+                                <Button Command="{Binding OpenTempFolder, Mode=OneWay}"
+                                        Content="{Binding OpenTempFolderLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{Binding OpenTempFolderToolTip}" />
+                            </StackPanel>
+                        </local:GroupBox>
+                        <local:GroupBox Header="{x:Static vm:OptionsViewModel.SettingsAdvancedGroupLabel}"
+                                  Margin="5">
+                            <StackPanel>
+                                <Button Command="{Binding ShowAdvancedSettings, Mode=OneWay}"
+                                        Content="{x:Static vm:OptionsViewModel.ShowAdvancedSettingsLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{x:Static vm:OptionsViewModel.ShowAdvancedSettingsToolTip}" />
+                                <Button Command="{Binding ResetUserSettings, Mode=OneWay}"
+                                        Content="{x:Static vm:OptionsViewModel.ResetUserSettingsLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{x:Static vm:OptionsViewModel.ResetUserSettingsToolTip}" />
+                                <Button Command="{Binding ResetConfirmations, Mode=OneWay}"
+                                        Content="{x:Static vm:OptionsViewModel.ResetConfirmationsLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{x:Static vm:OptionsViewModel.ResetConfirmationsToolTip}" />
+                            </StackPanel>
+                        </local:GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="{x:Static vm:OptionsViewModel.StylesGroupLabel}">
+                <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                              VerticalScrollBarVisibility="Visible">
+                    <StackPanel>
+                        <local:GroupBox Header="{x:Static vm:OptionsViewModel.StylesBasicGroupLabel}"
+                                  Margin="5">
+                            <Button Command="{Binding ShowStyleEditor}"
+                                    Content="{x:Static vm:OptionsViewModel.ShowStyleEditorLabel}"
+                                    Margin="5"
+                                    Classes="clean"
+                                    ToolTip.Tip="{x:Static vm:OptionsViewModel.ShowStyleEditorToolTip}" />
+                        </local:GroupBox>
+                        <local:GroupBox Header="{x:Static vm:OptionsViewModel.StylesAdvancedGroupLabel}"
+                                  Margin="5">
+                            <StackPanel>
+                                <Button Command="{Binding ShowAdvancedStyle, Mode=OneWay}"
+                                        Content="{x:Static vm:OptionsViewModel.ShowAdvancedStyleLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{x:Static vm:OptionsViewModel.ShowAdvancedStyleToolTip}" />
+                                <Button Command="{Binding ResetUserStyles, Mode=OneWay}"
+                                        Content="{x:Static vm:OptionsViewModel.ResetUserStylesLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{x:Static vm:OptionsViewModel.ResetUserStylesToolTip}" />
+                            </StackPanel>
+                        </local:GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="{x:Static vm:OptionsViewModel.FindersGroupLabel}">
+                <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                              VerticalScrollBarVisibility="Visible">
+                    <StackPanel>
+                        <local:GroupBox Header="{x:Static vm:OptionsViewModel.FindersManagersGroupLabel}"
+                                  Margin="5">
+                            <StackPanel>
+                                <Button Command="{Binding ShowInstrumentManager, Mode=OneWay}"
+                                        Content="{x:Static vm:OptionsViewModel.ShowInstrumentManagerLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{x:Static vm:OptionsViewModel.ShowInstrumentManagerToolTip}" />
+                                <Button Command="{Binding ShowChordQualityManager, Mode=OneWay}"
+                                        Content="{x:Static vm:OptionsViewModel.ShowChordQualityManagerLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{x:Static vm:OptionsViewModel.ShowChordQualityManagerToolTip}" />
+                                <Button Command="{Binding ShowScaleManager, Mode=OneWay}"
+                                        Content="{x:Static vm:OptionsViewModel.ShowScaleManagerLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{x:Static vm:OptionsViewModel.ShowScaleManagerToolTip}" />
+                            </StackPanel>
+                        </local:GroupBox>
+                        <local:GroupBox Header="{x:Static vm:OptionsViewModel.FindersSearchDefaultsGroupLabel}"
+                                  Margin="5">
+                            <StackPanel>
+                                <Button Command="{Binding ResetChordFinderDefaults, Mode=OneWay}"
+                                        Content="{x:Static vm:OptionsViewModel.ResetChordFinderDefaultsLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{x:Static vm:OptionsViewModel.ResetChordFinderDefaultsToolTip}" />
+                                <Button Command="{Binding ResetScaleFinderDefaults, Mode=OneWay}"
+                                        Content="{x:Static vm:OptionsViewModel.ResetScaleFinderDefaultsLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{x:Static vm:OptionsViewModel.ResetScaleFinderDefaultsToolTip}" />
+                            </StackPanel>
+                        </local:GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="{x:Static vm:OptionsViewModel.ConfigGroupLabel}">
+                <ScrollViewer HorizontalScrollBarVisibility="Hidden"
+                              VerticalScrollBarVisibility="Visible">
+                    <StackPanel>
+                        <local:GroupBox Header="{x:Static vm:OptionsViewModel.ConfigImportExportGroupLabel}"
+                                  Margin="5">
+                            <StackPanel>
+                                <Button Command="{Binding ShowConfigImport, Mode=OneWay}"
+                                        Content="{x:Static vm:OptionsViewModel.ShowConfigImportLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{x:Static vm:OptionsViewModel.ShowConfigImportToolTip}" />
+                                <Button Command="{Binding ShowConfigExport, Mode=OneWay}"
+                                        Content="{x:Static vm:OptionsViewModel.ShowConfigExportLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{x:Static vm:OptionsViewModel.ShowConfigExportToolTip}" />
+                            </StackPanel>
+                        </local:GroupBox>
+                        <local:GroupBox Header="{x:Static vm:OptionsViewModel.ConfigLegacyGroupLabel}"
+                                  Margin="5">
+                            <StackPanel>
+                                <Button Command="{Binding LegacyImport, Mode=OneWay}"
+                                        Content="{x:Static vm:OptionsViewModel.LegacyImportLabel}"
+                                        Margin="5"
+                                        Classes="clean"
+                                        ToolTip.Tip="{x:Static vm:OptionsViewModel.LegacyImportToolTip}" />
+                            </StackPanel>
+                        </local:GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+        <StackPanel Grid.Row="2"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Command="{Binding Apply}"
+                    Content="{x:Static vm:AppViewModel.ApplyLabel}"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+            <Button Command="{Binding Accept}"
+                    Content="{x:Static vm:AppViewModel.AcceptLabel}"
+                    IsDefault="True"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+            <Button Command="{Binding Cancel}"
+                    Content="{x:Static vm:AppViewModel.CancelLabel}"
+                    Margin="5"
+                    Classes="clean"
+                    Width="75" />
+        </StackPanel>
+    </Grid>
+</local:ChordiousWindow>
