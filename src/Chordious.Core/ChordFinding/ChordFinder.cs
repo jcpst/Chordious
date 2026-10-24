@@ -38,12 +38,16 @@ namespace Chordious.Core
                 return results;
             }
 
-            await FindAllChordsAsync(results, null, notesInChord, 0, chordFinderOptions, cancelToken);
+            // The search is CPU-bound, so run it synchronously on a worker thread rather than as
+            // a deeply nested chain of async calls (which allocates a state machine per node)
+            await Task.Run(() => FindAllChords(results, null, notesInChord, 0, int.MaxValue, int.MinValue, chordFinderOptions, cancelToken), cancelToken).ConfigureAwait(false);
 
             return results;
         }
 
-        private static async Task FindAllChordsAsync(ChordFinderResultSet results, NoteNode noteNode, InternalNote[] targetNotes, int str, IChordFinderOptions chordFinderOptions, CancellationToken cancelToken)
+        /// <param name="minFret">Lowest fretted (> 0) fret so far, for pruning by reach.</param>
+        /// <param name="maxFret">Highest fretted (> 0) fret so far, for pruning by reach.</param>
+        private static void FindAllChords(ChordFinderResultSet results, NoteNode noteNode, InternalNote[] targetNotes, int str, int minFret, int maxFret, IChordFinderOptions chordFinderOptions, CancellationToken cancelToken)
         {
             if (cancelToken.IsCancellationRequested)
             {
@@ -124,7 +128,7 @@ namespace Chordious.Core
                     {
                         Parent = noteNode
                     };
-                    await FindAllChordsAsync(results, muted, targetNotes, str + 1, chordFinderOptions, cancelToken);
+                    FindAllChords(results, muted, targetNotes, str + 1, minFret, maxFret, chordFinderOptions, cancelToken);
                 }
 
                 // Look at all the notes on the string
@@ -139,8 +143,24 @@ namespace Chordious.Core
                         // If it's a target note add it and search on the next string
                         if (note == targetNotes[i])
                         {
+                            int childMinFret = minFret;
+                            int childMaxFret = maxFret;
+
+                            // Only fretted notes count toward reach (see MarkUtils.ChordAnalysis)
+                            if (fret > 0)
+                            {
+                                childMinFret = Math.Min(minFret, fret);
+                                childMaxFret = Math.Max(maxFret, fret);
+
+                                // Reach only grows as strings are added, so this shape can never become valid
+                                if (childMaxFret - childMinFret + 1 > chordFinderOptions.MaxReach)
+                                {
+                                    break;
+                                }
+                            }
+
                             NoteNode child = new NoteNode(fret, note, noteNode);
-                            await FindAllChordsAsync(results, child, targetNotes, str + 1, chordFinderOptions, cancelToken);
+                            FindAllChords(results, child, targetNotes, str + 1, childMinFret, childMaxFret, chordFinderOptions, cancelToken);
                             break;
                         }
                     }

@@ -1,7 +1,9 @@
 // Copyright (c) Jon Thysell <http://jonthysell.com>
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Chordious.Core
 {
@@ -21,6 +23,7 @@ namespace Chordious.Core
         {
             get
             {
+                EnsureSorted();
                 foreach (ChordFinderResult cfr in _results)
                 {
                     yield return cfr;
@@ -41,12 +44,13 @@ namespace Chordious.Core
             if (IsValid(marks))
             {
                 _results.Add(new ChordFinderResult(this, marks));
-                _results.Sort();
+                _sorted = false;
             }
         }
 
         public IChordFinderResult ResultAt(int index)
         {
+            EnsureSorted();
             return _results[index];
         }
 
@@ -60,6 +64,7 @@ namespace Chordious.Core
         {
             DiagramCollection collection = new DiagramCollection(chordFinderStyle.Style);
 
+            EnsureSorted();
             foreach (ChordFinderResult result in _results)
             {
                 collection.Add(result.ToDiagram(chordFinderStyle));
@@ -67,6 +72,25 @@ namespace Chordious.Core
 
             return collection;
         }
+
+        /// <summary>
+        /// Results are sorted once when first read, rather than after every add (which made large
+        /// searches quadratic). The sort is stable, so tied results keep the order they were found in.
+        /// </summary>
+        private void EnsureSorted()
+        {
+            if (!_sorted)
+            {
+                List<IChordFinderResult> sorted = _results.OrderBy(result => result, ResultComparer).ToList();
+                _results.Clear();
+                _results.AddRange(sorted);
+                _sorted = true;
+            }
+        }
+
+        private static readonly IComparer<IChordFinderResult> ResultComparer = Comparer<IChordFinderResult>.Create((a, b) => ((IComparable)a).CompareTo(b));
+
+        private bool _sorted = true;
 
         private bool IsValid(int[] marks)
         {
